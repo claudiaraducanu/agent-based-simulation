@@ -1,4 +1,15 @@
-turtles-own [energy]
+globals [
+  conflicts
+  prevention-maneuver
+]
+
+breed [ reactives reactive]
+breed [ proactives proactive]
+
+reactives-own [
+  intruders
+  nearest-intruder
+]
 
 to setup
   clear-all
@@ -17,30 +28,50 @@ end
 
 to setup-patches
   ask patches [ set pcolor blue + 3 ]
-
 end
 
 to go
-  move-turtles
-  eat-grass
+  ask turtles [ set color black ]
+  ask turtles [change-heading]
+  ask turtles [ fd 1 ]
+  ask turtles [find-conflict]
+  ask turtles [find-maneuver-number]
   tick
 end
 
-to move-turtles
-  ask turtles [
-    right random 360
-    forward 1
-    set energy energy - 1
+to change-heading
+  find-intruders
+  if any? intruders [
+    find-nearest-intruder
+    ask nearest-intruder [ set color violet ]
+    ask other turtles in-radius separation [ set color red ]
+    let avoidance-heading  atan ( xcor - [xcor] of nearest-intruder ) ( ycor - [ycor] of nearest-intruder )
+    ;; set heading avoidance-heading
+    let dh avoidance-heading - heading
+    if dh < 0 [
+      set dh dh + 360
+    ]
+    ifelse dh < 180
+      [right 30 ]
+      [left  30 ]
+
   ]
 end
 
-to eat-grass
-  ask turtles [
-    if pcolor = blue + 3 [
-      set pcolor black
-      set energy energy + 10
-    ]
-  ]
+to find-maneuver-number
+  set prevention-maneuver ( prevention-maneuver + count other turtles in-radius vision  * 0.5 )
+end
+
+to find-conflict
+  set conflicts ( conflicts + count other turtles in-radius separation * 0.5 )
+end
+
+to find-intruders  ;; turtle procedure
+  set intruders other turtles in-radius vision
+end
+
+to find-nearest-intruder ;; turtle procedure
+  set nearest-intruder min-one-of intruders [distance myself]
 end
 
 @#$#@#$#@
@@ -112,13 +143,83 @@ SLIDER
 93
 airplanes
 airplanes
-20
+10
 60
-40.0
+10.0
 20
 1
 NIL
 HORIZONTAL
+
+SLIDER
+14
+106
+186
+139
+vision
+vision
+3
+5
+4.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+14
+150
+186
+183
+separation
+separation
+2
+4
+3.0
+1
+1
+NIL
+HORIZONTAL
+
+MONITOR
+16
+197
+97
+242
+NIL
+conflicts
+17
+1
+11
+
+MONITOR
+16
+255
+164
+300
+NIL
+prevention-maneuver
+17
+1
+11
+
+PLOT
+10
+311
+210
+461
+plot 1
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot conflicts"
 
 @#$#@#$#@
 ## WHAT IS IT?
