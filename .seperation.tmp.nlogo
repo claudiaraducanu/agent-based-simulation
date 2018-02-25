@@ -144,8 +144,8 @@ airplanes
 airplanes
 10
 60
-40.0
-10
+50.0
+20
 1
 NIL
 HORIZONTAL
