@@ -162,10 +162,10 @@ NIL
 1
 
 BUTTON
-123
-16
-186
-49
+101
+14
+164
+47
 NIL
 go\n
 T
@@ -202,7 +202,7 @@ vision
 vision
 3
 5
-4.0
+5.0
 1
 1
 NIL
@@ -217,7 +217,7 @@ separation
 separation
 2
 4
-3.0
+2.0
 1
 1
 NIL
