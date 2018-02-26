@@ -187,7 +187,7 @@ num-reactives
 num-reactives
 0
 60
-20.0
+0.0
 10
 1
 NIL
@@ -243,7 +243,7 @@ num-proactives
 num-proactives
 0
 60
-20.0
+40.0
 10
 1
 NIL
@@ -258,7 +258,7 @@ max-turn-angle
 max-turn-angle
 0
 30
-30.0
+15.0
 5
 1
 NIL
@@ -610,6 +610,50 @@ NetLogo 6.0.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="A1" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="A2" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
