@@ -186,8 +186,6 @@ to change-heading-proactive
   [ set color black]
 end
 
-
-
 to find-intruders  ;; turtle procedure
   set intruders other turtles in-radius vision
 end
