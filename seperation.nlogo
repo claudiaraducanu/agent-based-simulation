@@ -57,7 +57,7 @@ to go
   tick
 end
 
-to change-heading-reactive
+to change-heading-proactive
   find-intruders
   ifelse any? intruders [
     find-nearest-intruder
@@ -86,93 +86,13 @@ to change-heading-reactive
   [ set color black]
 end
 
-to change-heading-proactive
+to change-heading-reactive
   find-intruders
   ifelse any? intruders [
+
+    right random max-turn-angle * 2 - max-turn-angle
+
     set color violet
-    let minTimeToCPAWithAnIntruderBaseline minimum-time-to-CPA-set
-
-    ;; In case minTimeToCPAWithAnIntruderBaseline < 1000000, then that means that there will be an aircraft that will have a distance to CPA of less than the separation
-    let currentBestScenarioTime minTimeToCPAWithAnIntruderBaseline
-    let currentBestScenarioNum 0
-    let newScenarioTime 1000000
-
-    ifelse minTimeToCPAWithAnIntruderBaseline < 1000000[
-      ;;Try out different strategies to maxmize the time till CPA
-      ;; Scenario 0: do nothing
-      ;; Scenario 1: turn left  max-turn-angle
-      ;; Scenario 2: turn right max-turn-angle
-      ;; Scenario 3: increase speed
-      ;; Scenario 4: decrease speed
-
-      left max-turn-angle
-      set newScenarioTime minimum-time-to-CPA-set
-      if newScenarioTime > currentBestScenarioTime
-         [set currentBestScenarioTime newScenarioTime
-          set currentBestScenarioNum 1]
-      right max-turn-angle
-
-      right max-turn-angle
-      set newScenarioTime minimum-time-to-CPA-set
-      if newScenarioTime > currentBestScenarioTime
-         [set currentBestScenarioTime newScenarioTime
-          set currentBestScenarioNum 2]
-      left max-turn-angle
-
-      if speed + speed-change-step <= max-speed [
-        set speed  speed + speed-change-step
-        set newScenarioTime minimum-time-to-CPA-set
-        if newScenarioTime > currentBestScenarioTime
-            [set currentBestScenarioTime newScenarioTime
-              set currentBestScenarioNum 3]
-        set speed speed - speed-change-step
-      ]
-
-      if speed - speed-change-step >= min-speed [
-        set speed speed - speed-change-step
-        set newScenarioTime minimum-time-to-CPA-set
-        if newScenarioTime > currentBestScenarioTime
-            [set currentBestScenarioTime newScenarioTime
-              set currentBestScenarioNum 4]
-        set speed speed + speed-change-step
-      ]
-
-
-      if currentBestScenarioNum = 1 [
-        left max-turn-angle
-        set prevention-maneuver prevention-maneuver + 1 ]
-      if currentBestScenarioNum = 2 [
-        right max-turn-angle
-        set prevention-maneuver prevention-maneuver + 1 ]
-      if currentBestScenarioNum = 3 [
-        set speed  speed + speed-change-step
-        set prevention-maneuver prevention-maneuver + 1 ]
-      if currentBestScenarioNum = 4 [
-        set speed speed - speed-change-step
-        set prevention-maneuver prevention-maneuver + 1 ]
-
-      set color yellow
-    ]
-    [ ;; Else behave like a reactive agent (in order to remove cases where two aircraft are too close but going parallel and therefore not having CPA
-      set intruders other turtles in-radius separation
-      if any? intruders [
-        find-nearest-intruder
-        set color violet
-        let avoidance-heading  atan ( xcor - [xcor] of nearest-intruder ) ( ycor - [ycor] of nearest-intruder )
-        ;; set heading avoidance-heading
-        let dh avoidance-heading - heading
-        if dh < 0 [
-          set dh dh + 360
-        ]
-        ifelse dh < 180
-        [right max-turn-angle
-          set prevention-maneuver prevention-maneuver + 1  ]
-        [left  max-turn-angle
-          set prevention-maneuver prevention-maneuver + 1  ]
-      ]
-
-    ]
-
     ifelse in-separation > 0 [
       set color red
       if not in-conflict[
@@ -181,8 +101,7 @@ to change-heading-proactive
       ]
     ]
     [ set in-conflict false
-    ]
-  ]
+  ]]
   [ set color black]
 end
 
@@ -196,54 +115,6 @@ end
 
 to-report in-separation ;; turtle procedure
   report count other turtles in-radius separation
-end
-
-to-report calculate-time-to-CPA [own intruder] ;;calculating the closest	passing	distance based on Closest Point of Approach
-  ;; Calculate the relative velocity vector
-  let Vrel_x ([speed] of own) * sin( [heading] of own ) - ([speed] of intruder) * sin([heading] of intruder)
-  let Vrel_y ([speed] of own) * cos( [heading] of own ) - ([speed] of intruder) * cos([heading] of intruder)
-
-  ;; Calculate the relative position vector
-  let xrel_x [xcor] of intruder - [xcor] of own
-  let xrel_y [ycor] of intruder - [ycor] of own
-
-  ;; Calculate the distance to the intruder
-  let dist dot-product xrel_x xrel_y xrel_x xrel_y
-
-  ;; Calculate the time to CPA (bur only if the denominator is larger than 0, else the distance between the objects is not changing, and there is no risk of collision
-  let tCPA 1000000
-  ifelse abs (dot-product Vrel_x Vrel_y Vrel_x Vrel_y) < 0.0001
-      [set tCPA 1000000]
-      [set tCPA (dot-product xrel_x xrel_y Vrel_x Vrel_y) / (dot-product Vrel_x Vrel_y Vrel_x Vrel_y)]
-
-  ;; if tCPA is negative, then they will not conflict, so time to conflict is set to a very large number to support the processes of finding the conflict that will occur the soonest
-  ifelse tCPA <= 0
-     [set tCPA 1000000]
-     [;; Calculate the distance to CPA
-      let dCPA_x xrel_x - tCPA * Vrel_x
-      let dCPA_y xrel_y - tCPA * Vrel_y
-      let dCPA sqrt(( dot-product dCPA_x dCPA_y dCPA_x dCPA_y) )
-      ;; If the CPA is further away than the separation distance, no conflict will occur, so no need to evade
-      if dCPA > separation
-         [set tCPA 1000000]
-     ]
-
-  report tCPA
-end
-
-to-report minimum-time-to-CPA-set
-  let minTimeToCPAWithAnIntruder 1000000;
-  let currentTimeToCPA 1000000;
-  let agent-list [ self ] of intruders
-  foreach agent-list [[intruder] ->
-    set currentTimeToCPA calculate-time-to-CPA self intruder
-    set minTimeToCPAWithAnIntruder min (list currentTimeToCPA minTimeToCPAWithAnIntruder)
-  ]
-  report minTimeToCPAWithAnIntruder
-end
-
-to-report dot-product [Ax Ay Bx By]
-  report (Ax * Bx + Ay * By)
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
