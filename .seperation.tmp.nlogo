@@ -33,7 +33,7 @@ to setup-turtles
   ask reactives [ set color black ]
   ask reactives [ set shape "default" ]
   ask reactives [ set size 3]
-  ask reactives [ set speed ]
+  ask reactives [ set speed velocity]
   ask reactives [ set in-conflict false]
 
   create-proactives num-proactives
@@ -41,7 +41,7 @@ to setup-turtles
   ask proactives [ set color black ]
   ask proactives [ set shape "airplane" ]
   ask proactives [ set size 3]
-  ask proactives [ set speed 0.5]
+  ask proactives [ set speed velocity]
   ask proactives [ set in-conflict false]
 end
 
@@ -202,7 +202,7 @@ vision
 vision
 3
 5
-4.0
+5.0
 1
 1
 NIL
@@ -646,6 +646,9 @@ NetLogo 6.0.2
     <enumeratedValueSet variable="num-reactives">
       <value value="40"/>
     </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
   </experiment>
   <experiment name="A2" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
@@ -666,6 +669,201 @@ NetLogo 6.0.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="num-reactives">
       <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="B1" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="32"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="8"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="B2" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="8"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="32"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="C1-20" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="C1-60" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="60"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="C2-2" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="C2-4" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="C3-3" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="C3-5" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
