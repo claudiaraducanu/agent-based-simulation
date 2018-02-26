@@ -33,7 +33,7 @@ to setup-turtles
   ask reactives [ set color black ]
   ask reactives [ set shape "default" ]
   ask reactives [ set size 3]
-  ask reactives [ set speed 1]
+  ask reactives [ set speed velocity]
   ask reactives [ set in-conflict false]
 
   create-proactives num-proactives
@@ -41,7 +41,7 @@ to setup-turtles
   ask proactives [ set color black ]
   ask proactives [ set shape "airplane" ]
   ask proactives [ set size 3]
-  ask proactives [ set speed 1]
+  ask proactives [ set speed velocity]
   ask proactives [ set in-conflict false]
 end
 
@@ -225,9 +225,9 @@ HORIZONTAL
 
 MONITOR
 63
-289
+323
 144
-334
+368
 NIL
 conflicts
 17
@@ -260,6 +260,21 @@ max-turn-angle
 30
 15.0
 5
+1
+NIL
+HORIZONTAL
+
+SLIDER
+17
+276
+189
+309
+velocity
+velocity
+0.1
+1.0
+0.5
+0.1
 1
 NIL
 HORIZONTAL
