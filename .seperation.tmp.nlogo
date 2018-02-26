@@ -59,18 +59,8 @@ end
 
 to change-heading-proactive
   find-intruders
-  ifelse any? intruders [
+  ife any? intruders [
     find-nearest-intruder
-    set color violet
-    ifelse in-separation > 0 [
-      set color red
-      if not in-conflict[
-        set in-conflict true
-        set conflicts conflicts + 1
-      ]
-    ]
-    [ set in-conflict false
-    ]
     let avoidance-heading  atan ( xcor - [xcor] of nearest-intruder ) ( ycor - [ycor] of nearest-intruder )
     ;; set heading avoidance-heading
     let dh avoidance-heading - heading
@@ -83,7 +73,19 @@ to change-heading-proactive
       [left  max-turn-angle
        set prevention-maneuver prevention-maneuver + 1  ]
   ]
-  [ set color black]
+
+
+   set color violet
+   else in-separation > 0 [
+      set color red
+      if not in-conflict[
+        set in-conflict true
+        set conflicts conflicts + 1
+      ]
+    ]
+  ]
+  [ set color black
+    set in-conflict false]
 end
 
 to change-heading-reactive
@@ -93,16 +95,16 @@ to change-heading-reactive
     right random max-turn-angle * 2 - max-turn-angle
 
     set color violet
-    ifelse in-separation > 0 [
+    else in-separation > 0 [
       set color red
       if not in-conflict[
         set in-conflict true
         set conflicts conflicts + 1
       ]
     ]
-    [ set in-conflict false
-  ]]
-  [ set color black]
+  ]
+  [ set color black
+    set in-conflict false]
 end
 
 to find-intruders  ;; turtle procedure
@@ -202,7 +204,7 @@ vision
 vision
 3
 5
-5.0
+4.0
 1
 1
 NIL
@@ -217,7 +219,7 @@ separation
 separation
 2
 4
-3.0
+4.0
 1
 1
 NIL
