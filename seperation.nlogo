@@ -1,19 +1,19 @@
 globals [
-  conflicts
-  prevention-maneuver
+  conflicts             ;; counter of total number of conflicts in world
+  prevention-maneuver   ;; counter of total number of times turtle changes heading
 ]
 
 breed [ reactives reactive]
 breed [ proactives proactive]
 
 reactives-own [
-  intruders
-  nearest-intruder
-  speed
-  in-conflict
+  intruders          ;; agentset of turtles in vision
+  nearest-intruder   ;; closest one of the intruders
+  speed              ;; how many or how much of a patch an agent moves in one tick
+  in-conflict        ;; agent either in conflict, then variable is true, otherwise false
 ]
 
-proactives-own [
+proactives-own [    ;; variables are the same as reactive turtle variables
   intruders
   nearest-intruder
   speed
@@ -32,17 +32,17 @@ to setup-turtles
   ask reactives [ setxy random-xcor random-ycor ]
   ask reactives [ set color black ]
   ask reactives [ set shape "default" ]
-  ask reactives [ set size 3]
+  ask reactives [ set size 3]  ;; easier to see turtles
   ask reactives [ set speed velocity]
-  ask reactives [ set in-conflict false]
+  ask reactives [ set in-conflict false]  ;; agent is not in conflict with other agents at setup
 
   create-proactives num-proactives
   ask proactives [ setxy random-xcor random-ycor ]
   ask proactives [ set color black ]
   ask proactives [ set shape "airplane" ]
-  ask proactives [ set size 3]
+  ask proactives [ set size 3]  ;; easier to see turtles
   ask proactives [ set speed velocity]
-  ask proactives [ set in-conflict false]
+  ask proactives [ set in-conflict false] ;; agent is not in conflict with other agents at setup
 end
 
 to setup-patches
@@ -57,28 +57,30 @@ to go
   tick
 end
 
-to change-heading-proactive
+to change-heading-proactive ;; proactive procedure
   find-intruders
-  ifelse any? intruders [
-    find-nearest-intruder
+  ifelse any? intruders [  ;; find agentset of turtles in vision
+    find-nearest-intruder  ;; find closest turtle of the agentset
     let avoidance-heading  atan ( xcor - [xcor] of nearest-intruder ) ( ycor - [ycor] of nearest-intruder )
-    ;; set heading avoidance-heading
+    ;; avoidance-heading is the opposite direction of the line connecting the turtle with its closest turtle
     let dh avoidance-heading - heading
-    if dh < 0 [
+    ;; set angle between avoidance heading and the heading of the turtle
+    if dh < 0 [         ;; make sure it's positive
       set dh dh + 360
     ]
-    ifelse dh < 180
-      [right max-turn-angle
-       set prevention-maneuver prevention-maneuver + 1  ]
-      [left  max-turn-angle
-       set prevention-maneuver prevention-maneuver + 1  ]
+    ifelse dh < 180     ;; closest turtle to the left of turtle
+      [right max-turn-angle ;; turtle avoids closest turtle by making a heading change to the right.
+       set prevention-maneuver prevention-maneuver + 1  ]  ;;
+      [left  max-turn-angle ;; closest turtle to the right of turtle
+      ;; turtle avoids closest turtle by making a heading change to the left.
+       set prevention-maneuver prevention-maneuver + 1  ]  ;;
 
    set color violet
-   if in-separation > 0 [
-      set color red
+   if in-separation > 0 [  ;; if number of turtles in turtle minimum separation distance is larger than zero
+      set color red        ;; easier conflict visualization
       if not in-conflict[
-        set in-conflict true
-        set conflicts conflicts + 1
+        set in-conflict true  ;; set true because there are turtles in minimum separation distance
+        set conflicts conflicts + 1 ;; increase number of conflicts
       ]
     ]
   ]
@@ -87,18 +89,18 @@ to change-heading-proactive
     set in-conflict false]
 end
 
-to change-heading-reactive
+to change-heading-reactive   ;; reactive procedure
   find-intruders
   ifelse any? intruders [
 
-    right random max-turn-angle * 2 - max-turn-angle
+    right random max-turn-angle * 2 - max-turn-angle ;; randomly
 
-    set color violet
-    if in-separation > 0 [
+    set color violet         ;; set reactive agent to violet if he has intruders
+    if in-separation > 0 [   ;; number of turtles in turtle minimum separation distance larger than zero then
       set color red
       if not in-conflict[
-        set in-conflict true
-        set conflicts conflicts + 1
+        set in-conflict true  ;; set true because there are turtles in minimum separation distance
+        set conflicts conflicts + 1  ;; increase number of conflicts
       ]
     ]
   ]
@@ -107,14 +109,14 @@ to change-heading-reactive
 end
 
 to find-intruders  ;; turtle procedure
-  set intruders other turtles in-radius vision
+  set intruders other turtles in-radius vision ;; determine agentset of turtles in vision
 end
 
-to find-nearest-intruder ;; turtle procedure
-  set nearest-intruder min-one-of intruders [distance myself]
+to find-nearest-intruder ;; proactive procedure
+  set nearest-intruder min-one-of intruders [distance myself] ;; determine closest one of intruders
 end
 
-to-report in-separation ;; turtle procedure
+to-report in-separation  ;; number of turtles in turtle minimum separation distance
   report count other turtles in-radius separation
 end
 @#$#@#$#@
@@ -244,7 +246,7 @@ num-proactives
 num-proactives
 0
 60
-10.0
+50.0
 10
 1
 NIL
