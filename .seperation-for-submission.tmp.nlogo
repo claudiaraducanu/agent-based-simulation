@@ -102,7 +102,7 @@ to change-heading-reactive
       ]
     ]
   ]
-  [ set color black
+  [  set color black
     set in-conflict false]
 end
 
@@ -244,7 +244,7 @@ num-proactives
 num-proactives
 0
 60
-10.0
+40.0
 10
 1
 NIL
@@ -274,7 +274,7 @@ velocity
 velocity
 0.1
 1.0
-0.5
+0.9
 0.1
 1
 NIL
@@ -897,63 +897,6 @@ NetLogo 6.0.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="num-reactives">
       <value value="0"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="num-agents-vs-conflicts" repetitions="10" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="100"/>
-    <metric>conflicts</metric>
-    <enumeratedValueSet variable="vision">
-      <value value="4"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="separation">
-      <value value="3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="max-turn-angle">
-      <value value="15"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num-proactives">
-      <value value="10"/>
-      <value value="20"/>
-      <value value="30"/>
-      <value value="40"/>
-      <value value="50"/>
-      <value value="60"/>
-      <value value="70"/>
-      <value value="80"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num-reactives">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="velocity">
-      <value value="0.5"/>
-    </enumeratedValueSet>
-  </experiment>
-  <experiment name="SA-num-agents" repetitions="10" runMetricsEveryStep="true">
-    <setup>setup</setup>
-    <go>go</go>
-    <timeLimit steps="100"/>
-    <metric>conflicts</metric>
-    <enumeratedValueSet variable="vision">
-      <value value="4"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="separation">
-      <value value="3"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="max-turn-angle">
-      <value value="15"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num-proactives">
-      <value value="38"/>
-      <value value="40"/>
-      <value value="42"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="num-reactives">
-      <value value="0"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="velocity">
-      <value value="0.5"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
