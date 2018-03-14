@@ -244,7 +244,7 @@ num-proactives
 num-proactives
 0
 60
-10.0
+40.0
 10
 1
 NIL
@@ -274,7 +274,7 @@ velocity
 velocity
 0.1
 1.0
-0.5
+0.525
 0.1
 1
 NIL
@@ -928,6 +928,136 @@ NetLogo 6.0.2
     </enumeratedValueSet>
     <enumeratedValueSet variable="velocity">
       <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA-num-agents" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="38"/>
+      <value value="40"/>
+      <value value="42"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA-vision" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="3.8"/>
+      <value value="4"/>
+      <value value="4.2"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA-separation" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="2.85"/>
+      <value value="3"/>
+      <value value="3.15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA-maxangle" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="14.25"/>
+      <value value="15"/>
+      <value value="15.75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="SA-speed" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="100"/>
+    <metric>conflicts</metric>
+    <enumeratedValueSet variable="vision">
+      <value value="4"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="separation">
+      <value value="3"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="max-turn-angle">
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-proactives">
+      <value value="40"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="num-reactives">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="velocity">
+      <value value="0.475"/>
+      <value value="0.5"/>
+      <value value="0.525"/>
     </enumeratedValueSet>
   </experiment>
 </experiments>
