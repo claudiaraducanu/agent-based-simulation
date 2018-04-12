@@ -1,0 +1,207 @@
+; ****** Setup of the platform infrastructure ******
+to setup-infra
+  let paths patches with [
+    ((pxcor <= 15) and (pxcor >= -24) and (pycor = 0)) or
+    ((pxcor <= 15) and (pxcor >= -24) and (pycor = -5)) or
+    ((pxcor <= 15) and (pxcor >= -24) and (pycor = 5)) or
+    ((pxcor <= 15) and (pxcor >= -24) and (pycor = 10)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -24)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -22)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -19)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -16)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -13)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -10)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -7)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -4)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = -1)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = 2)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = 5)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = 7)) or
+    ((pycor <= 10) and (pycor >= -5) and (pxcor = 15)) or
+    ((pxcor <= 15) and (pxcor >= 7) and (pycor = 8)) or
+    ((pxcor <= 15) and (pxcor >= 7) and (pycor = 6)) or
+    ((pxcor <= 15) and (pxcor >= 7) and (pycor = -1)) or
+    ((pxcor <= 15) and (pxcor >= 7) and (pycor = -3)) or
+    ((pycor <= -3) and (pycor >= -7) and (pxcor = 15)) or
+    ((pycor <= -3) and (pycor >= -7) and (pxcor = 7)) or
+    ((pycor <= -3) and (pycor >= -7) and (pxcor = 5)) or
+    ((pycor <= -5) and (pycor >= -7) and (pxcor = 9)) or
+    ((pycor <= -5) and (pycor >= -7) and (pxcor = 11)) or
+    ((pycor <= -5) and (pycor >= -7) and (pxcor = 13))
+
+  ]
+  ask paths [ set pcolor white ]
+  ask paths [ sprout-nodes 1 [set shape "circle"]]
+
+  let feeder-belt patches with [
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 8)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 5)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 6)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = -1)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 0)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = -3))
+  ]
+  ask feeder-belt [set pcolor green - 2]
+
+  let chutes patches with [
+    (pxcor = -23 and pycor = 9) or
+    (pxcor = -23 and pycor = 6) or
+    (pxcor = -20 and pycor = 9) or
+    (pxcor = -21 and pycor = 9) or
+    (pxcor = -20 and pycor = 6) or
+    (pxcor = -21 and pycor = 6) or
+    (pxcor = -18 and pycor = 9) or
+    (pxcor = -17 and pycor = 9) or
+    (pxcor = -18 and pycor = 6) or
+    (pxcor = -17 and pycor = 6) or
+    (pxcor = -15 and pycor = 9) or
+    (pxcor = -14 and pycor = 9) or
+    (pxcor = -15 and pycor = 6) or
+    (pxcor = -14 and pycor = 6) or
+    (pxcor = -12 and pycor = 9) or
+    (pxcor = -11 and pycor = 9) or
+    (pxcor = -12 and pycor = 6) or
+    (pxcor = -11 and pycor = 6) or
+    (pxcor = -9 and pycor = 9) or
+    (pxcor = -8 and pycor = 9) or
+    (pxcor = -9 and pycor = 6) or
+    (pxcor = -8 and pycor = 6) or
+    (pxcor = -6 and pycor = 9) or
+    (pxcor = -5 and pycor = 9) or
+    (pxcor = -6 and pycor = 6) or
+    (pxcor = -5 and pycor = 6) or
+    (pxcor = -3 and pycor = 9) or
+    (pxcor = -2 and pycor = 9) or
+    (pxcor = -3 and pycor = 6) or
+    (pxcor = -2 and pycor = 6) or
+    (pxcor = 0 and pycor = 9) or
+    (pxcor = 1 and pycor = 9) or
+    (pxcor = 0 and pycor = 6) or
+    (pxcor = 1 and pycor = 6) or
+    (pxcor = 3 and pycor = 9) or
+    (pxcor = 4 and pycor = 9) or
+    (pxcor = 3 and pycor = 6) or
+    (pxcor = 4 and pycor = 6) or
+    (pxcor = 6 and pycor = 9) or
+    (pxcor = 6 and pycor = 6) or
+    (pxcor = -23 and pycor = -1) or
+    (pxcor = -23 and pycor = -4) or
+    (pxcor = -20 and pycor = -1) or
+    (pxcor = -21 and pycor = -1) or
+    (pxcor = -20 and pycor = -4) or
+    (pxcor = -21 and pycor = -4) or
+    (pxcor = -18 and pycor = -1) or
+    (pxcor = -17 and pycor = -1) or
+    (pxcor = -18 and pycor = -4) or
+    (pxcor = -17 and pycor = -4) or
+    (pxcor = -15 and pycor = -1) or
+    (pxcor = -14 and pycor = -1) or
+    (pxcor = -15 and pycor = -4) or
+    (pxcor = -14 and pycor = -4) or
+    (pxcor = -12 and pycor = -1) or
+    (pxcor = -11 and pycor = -1) or
+    (pxcor = -12 and pycor = -4) or
+    (pxcor = -11 and pycor = -4) or
+    (pxcor = -9 and pycor = -1) or
+    (pxcor = -8 and pycor = -1) or
+    (pxcor = -9 and pycor = -4) or
+    (pxcor = -8 and pycor = -4) or
+    (pxcor = -6 and pycor = -1) or
+    (pxcor = -5 and pycor = -1) or
+    (pxcor = -6 and pycor = -4) or
+    (pxcor = -5 and pycor = -4) or
+    (pxcor = -3 and pycor = -1) or
+    (pxcor = -2 and pycor = -1) or
+    (pxcor = -3 and pycor = -4) or
+    (pxcor = -2 and pycor = -4) or
+    (pxcor = 0 and pycor = -1) or
+    (pxcor = 1 and pycor = -1) or
+    (pxcor = 0 and pycor = -4) or
+    (pxcor = 1 and pycor = -4) or
+    (pxcor = 3 and pycor = -1) or
+    (pxcor = 4 and pycor = -1) or
+    (pxcor = 3 and pycor = -4) or
+    (pxcor = 4 and pycor = -4) or
+    (pxcor = 6 and pycor = -1) or
+    (pxcor = 6 and pycor = -4)
+  ]
+  ask chutes [set pcolor 108]
+
+  let chargePoints patches with [
+    (pxcor = 15) and (pycor = -8) or
+    (pxcor = 13) and (pycor = -8) or
+    (pxcor = 11) and (pycor = -8) or
+    (pxcor = 9) and (pycor = -8) or
+    (pxcor = 7) and (pycor = -8) or
+    (pxcor = 5) and (pycor = -8)
+  ]
+  ask chargePoints [set pcolor 27]
+  
+  ask chargePoints [ sprout-charge-nodes 1 [set shape "electric outlet"]]
+
+  let chargestructure patches with [
+    (pxcor = 14) and (pycor = -8) or
+    (pxcor = 12) and (pycor = -8) or
+    (pxcor = 10) and (pycor = -8) or
+    (pxcor = 8) and (pycor = -8) or
+    (pxcor = 6) and (pycor = -8)
+  ]
+  ask chargestructure [set pcolor black]
+  
+  
+ ; SET UP THE NODES
+  ask nodes [ set color black
+    set size 0.3]
+  ask charge-nodes [ set color 27
+    set size 1.0]
+  ask nodes [ create-connectivity-with nodes-on neighbors4]
+  ask nodes [ create-connectivity-with charge-nodes-on neighbors4]
+  
+end
+
+; ****** Setup of the collectpoints ******
+to setup-collectPoints
+  create-luggageCollectPoints 1 [
+    set color green - 1
+    set shape "square"
+    set size 0.8
+    setxy 10 -3
+  ]
+
+  create-luggageCollectPoints 1 [
+    set color green - 1
+    set shape "square"
+    set size 0.8
+    setxy 10 -1
+  ]
+
+  create-luggageCollectPoints 1 [
+    set color green - 1
+    set shape "square"
+    set size 0.8
+    setxy 10 0
+  ]
+
+  create-luggageCollectPoints 1 [
+    set color green - 1
+    set shape "square"
+    set size 0.8
+    setxy 10 5
+  ]
+
+  create-luggageCollectPoints 1 [
+    set color green - 1
+    set shape "square"
+    set size 0.8
+    setxy 10 6
+  ]
+
+  create-luggageCollectPoints 1 [
+    set color green - 1
+    set shape "square"
+    set size 0.8
+    setxy 10 8
+  ]
+  
+  
+end

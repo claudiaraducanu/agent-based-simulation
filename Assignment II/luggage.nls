@@ -1,0 +1,88 @@
+to set-up-luggage-infra  
+  set feeder-belt-generators (patches with [
+    ((pxcor = 14) and (pycor = 8)) or
+    ((pxcor = 14) and (pycor = 5)) or
+    ((pxcor = 14) and (pycor = 6)) or
+    ((pxcor = 14) and (pycor = -1)) or
+    ((pxcor = 14) and (pycor = 0)) or
+    ((pxcor = 14) and (pycor = -3))
+  ])
+end
+
+to set-up-delivery-infra
+  set delivery-nodes (nodes-on patches with [
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = 9)) or
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = 6)) or
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = -1)) or
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = -4))
+  ])
+end
+
+to set-up-belt-links
+  let nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 14) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
+  ask nodes-to-delete-links-from [ ask my-links [die] ]
+  set nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 15) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
+  ;ask connectivity [ set hidden? true]
+  ask nodes-to-delete-links-from [ create-connectivity-to nodes-on patch-at-heading-and-distance 270 1 ]
+ 
+
+end
+
+to generate-luggage-service
+  if (random-float 1) <= ( (1) / luggage-time ) [
+    ask one-of feeder-belt-generators [luggage-generate] ]
+  ask luggages [luggage-move]
+  ask luggages [luggage-invite]
+  ask luggages [luggage-hop-on]
+end
+
+to luggage-generate
+   sprout-luggages 1 [set color one-of base-colors
+                      set shape "box"
+                      set size 0.5
+                      set heading 270
+                      set target-node one-of delivery-nodes
+                      ask target-node [set hidden? false
+                                       set color [color] of myself]
+                      set assigned false
+                      set on-carrier false ]
+end
+
+to luggage-move
+   if xcor > 10 [
+     if not any? luggages-on patch-ahead 1 [
+       fd 1
+     ]
+   ]
+end
+
+to luggage-invite
+  let my-location-node one-of nodes-here
+  let currently-available-agvs (agvs with [availability = true])
+  if not assigned and xcor = 10 and any? currently-available-agvs [ set assigned true
+                                                                    ask (one-of currently-available-agvs) [ set-my-target-node my-location-node
+                                                                    set availability false ] ]
+end
+
+to luggage-hop-on
+  let my-target-node target-node
+  if not on-carrier and assigned and any? agvs-here [ 
+    let my-carrier one-of agvs-here
+    ask my-carrier [ set-my-target-node my-target-node]
+    ask my-carrier [ set color black]
+    ask my-carrier [ set current-luggage myself]
+    ask my-carrier [ set current-luggage-set true]
+    set carrier my-carrier
+    set on-carrier true
+    ]
+end
+
+
+to luggage-hop-off
+  if on-carrier and target-node member? nodes-here[
+    set num-of-delivered num-of-delivered + 1
+    ask carrier [ set color black]
+    ask carrier [ set surrent-luggage-set false]
+    
+  ]
+end
