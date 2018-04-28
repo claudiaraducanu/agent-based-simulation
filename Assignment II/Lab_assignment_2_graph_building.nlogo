@@ -20,6 +20,7 @@ globals [
 agvs-own[
   next-node
   target-node
+  temp-target-node
   battery-life
   availability
   current-luggage-set
@@ -69,8 +70,11 @@ to agv-go
   face next-node
   move-to next-node
   if current-luggage-set [ ask current-luggage [move-to myself]]
-  set battery-life (battery-life - 1)
   set label battery-life
+  if battery-life < 60 [
+    set temp-target-node target-node
+    set target-node one-of charge-nodes]
+  charge-agv
 end
 
 
@@ -93,6 +97,15 @@ end
 
 to set-my-target-node [nodey]
   set target-node nodey
+end
+
+to charge-agv
+  ifelse any? charge-nodes-here and battery-life < 500 [
+     set battery-life (battery-life + 25)
+    if battery-life = 500 [ set target-node temp-target-node ]
+  ][
+     set battery-life (battery-life - 1)
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -148,7 +161,7 @@ number-of-robots
 number-of-robots
 4
 10
-7.0
+4.0
 3
 1
 NIL

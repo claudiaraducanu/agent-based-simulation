@@ -34,6 +34,7 @@ to generate-luggage-service
   ask luggages [luggage-move]
   ask luggages [luggage-invite]
   ask luggages [luggage-hop-on]
+  ask luggages [luggage-hop-off]
 end
 
 to luggage-generate
@@ -59,17 +60,18 @@ end
 to luggage-invite
   let my-location-node one-of nodes-here
   let currently-available-agvs (agvs with [availability = true])
+  
   if not assigned and xcor = 10 and any? currently-available-agvs [ set assigned true
                                                                     ask (one-of currently-available-agvs) [ set-my-target-node my-location-node
                                                                     set availability false ] ]
 end
 
+;FIX SO THAT YOU CAN HOP ON ONLY ON THE ASSIGNED AGV
 to luggage-hop-on
   let my-target-node target-node
   if not on-carrier and assigned and any? agvs-here [ 
     let my-carrier one-of agvs-here
     ask my-carrier [ set-my-target-node my-target-node]
-    ask my-carrier [ set color black]
     ask my-carrier [ set current-luggage myself]
     ask my-carrier [ set current-luggage-set true]
     set carrier my-carrier
@@ -79,10 +81,11 @@ end
 
 
 to luggage-hop-off
-  if on-carrier and target-node member? nodes-here[
-    set num-of-delivered num-of-delivered + 1
-    ask carrier [ set color black]
-    ask carrier [ set surrent-luggage-set false]
-    
+  if on-carrier and member? target-node nodes-here [
+    set num-of-delivered (num-of-delivered + 1)
+    ask carrier [ set current-luggage-set false]
+    ask carrier [ set availability true]
+    ask target-node [set hidden? true]
+    die
   ]
 end
