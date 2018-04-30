@@ -1,6 +1,7 @@
 __includes [ "environment.nls"
              "luggage.nls"
-             "agvs.nls"]
+             "chargenodes.nls"
+             "agvs.nls" ]
 
 extensions [ nw ]
 
@@ -11,7 +12,6 @@ breed [luggages luggage]
 breed [luggageCollectPoints luggageCollectPoint]
 directed-link-breed [ connectivity connection ]
 
-
 globals [
   feeder-belt-generators
   delivery-nodes
@@ -21,12 +21,13 @@ globals [
 agvs-own[
   next-node
   target-node
-  temp-target-node
-  battery-life
-  availability
-  current-luggage-set
-  current-luggage
+  assigned-to-luggage
+  currently-carrying
+  mode
+  battery-drained-on
+  reward-c
   reward-p
+  reward-s
 ]
 
 luggages-own[
@@ -37,14 +38,23 @@ luggages-own[
   age
 ]
 
+charge-nodes-own[
+  reserved
+  available
+]
+
 
 to setup
   clear-all
   reset-ticks
   resize-world -26 20 -14 15
   ask patches [ set pcolor [196 228 95] ]
-  set num-of-delivered 0
+
   setup-infra
+  ask charge-nodes [setup-chargenodes]
+
+  ;;Potentially delete
+  set num-of-delivered 0
   setup-collectPoints
   set-up-luggage-infra
   set-up-delivery-infra
@@ -54,6 +64,7 @@ end
 
 to go
   ask agvs [agv-go]
+  ask charge-nodes [charge-nodes-go]
   generate-luggage-service
 end
 @#$#@#$#@
@@ -110,7 +121,7 @@ number-of-robots
 number-of-robots
 4
 10
-4.0
+0.0
 3
 1
 NIL
@@ -125,7 +136,7 @@ luggage-time
 luggage-time
 5
 20
-5.0
+0.0
 5
 1
 NIL
