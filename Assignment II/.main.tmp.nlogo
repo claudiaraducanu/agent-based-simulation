@@ -21,11 +21,7 @@ globals [
 agvs-own[
   next-node
   target-node
-  temp-target-node
-  battery-life
-  availability
-  current-luggage-set
-  current-luggage
+
 ]
 
 luggages-own[
@@ -33,7 +29,6 @@ luggages-own[
   assigned
   on-carrier
   carrier
-
 ]
 
 
