@@ -9,11 +9,12 @@ to agv-setup
   set currently-carrying false
   set mode "r"
 end
-
+ 
 to agv-go
   dead-agv-set-battery-drained-on
   alive-agv-set-battery-drained-on
   move-dead-agv-to-charging-spot
+  charge-agv
   
   ;;to remove:
   ask-my-current-node-to-set-my-next-node
@@ -24,59 +25,37 @@ to agv-go
   if battery-life < 60 [
     set temp-target-node target-node
     set target-node one-of charge-nodes]
-  charge-agv
+  
 end
-
+ 
 to dead-agv-set-battery-drained-on
   if (battery-life < 1) and (battery-drained-on = 0) [
     set battery-drained-on tick
   ]
 end
-
+ 
 to alive-agv-set-battery-drained-on
   if battery-life > 0 [
     set battery-drained-on 0
   ]
 end
-
+ 
 to move-dead-agv-to-charging-spot
   if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > tick+30) [
     move-to one-of charge-nodes with [available = true and reserved = false]
     set battery-drained-on 0
   ]
 end
-
-
-
-
-
-to ask-my-current-node-to-set-my-next-node
-  if not member? target-node nodes-here [ ask nodes-here [set-my-next-node] ]
-end
-
-to set-my-next-node
-  ;ask nodes-here [nw:turtles-on-path-to turtle 101]
-  let list-of-nodes nw:turtles-on-path-to [target-node] of myself
-  if is-list? list-of-nodes
-     [let agv-next-node item 1 list-of-nodes
-        ask myself [ set next-node agv-next-node ]]
-end
-
-to set-my-target-node-randomly
-  set target-node one-of nodes
-  ask target-node [set color red]
-end
-
-to set-my-target-node [nodey]
-  set target-node nodey
-end
-
+ 
 to charge-agv
-  
-  ifelse any? charge-nodes-here and battery-life < 500 [
+  if any? charge-nodes-here and battery-life < 476 [
      set battery-life (battery-life + 25)
-    if battery-life = 500 [ set target-node temp-target-node ]
-  ][
-     set battery-life (battery-life - 1)
   ]
 end
+ 
+ 
+ 
+ 
+ 
+commit:b2340f
+WIP on master: Auto stash before merge of "master" and "origin/master"
