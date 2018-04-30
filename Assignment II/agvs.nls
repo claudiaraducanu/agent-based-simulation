@@ -15,17 +15,11 @@ to agv-go
   alive-agv-set-battery-drained-on
   move-dead-agv-to-charging-spot
   charge-agv
+  move-forward
+  go-to-pick-assigned-luggage
+  carry-to-luggage-destination
   
-  ;;to remove:
-  ask-my-current-node-to-set-my-next-node
-  face next-node
-  move-to next-node
-  if current-luggage-set [ ask current-luggage [move-to myself]]
   set label battery-life
-  if battery-life < 60 [
-    set temp-target-node target-node
-    set target-node one-of charge-nodes]
-  
 end
  
 to dead-agv-set-battery-drained-on
@@ -44,6 +38,7 @@ to move-dead-agv-to-charging-spot
   if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > tick+30) [
     move-to one-of charge-nodes with [available = true and reserved = false]
     set battery-drained-on 0
+    set mode "c"
   ]
 end
  
@@ -52,10 +47,40 @@ to charge-agv
      set battery-life (battery-life + 25)
   ]
 end
- 
- 
- 
- 
- 
-commit:b2340f
-WIP on master: Auto stash before merge of "master" and "origin/master"
+
+to move-forward
+  if (target-node not in nodes-here) and (battery-life > 0) and (mode not "c") [
+    set-my-next-node
+    if not any? agvs-on (patch-here of next-node) [
+      face next-node
+      move-to next-node
+    ]
+  ]
+end
+
+to set-my-next-node
+  let list-of-nodes nw:turtles-on-weighted-path-to ([target-node] of myself) weight
+  if is-list? list-of-nodes
+     [let agv-next-node item 1 list-of-nodes
+        ask myself [ set next-node agv-next-node ]]
+end
+
+to go-to-pick-assigned-luggage
+  if assigned-to-luggage and (not currently-carrying) [
+    set target-node one-of nodes-on assigned-to-luggage
+  ]
+end
+
+to carry-to-luggage-destination
+  if member? assigned-to-luggage luggages-here [
+    set currently-carrying true
+    set target-node [destination] of assigned-to-luggage
+  ]
+end
+
+to release-luggage
+  if (member? target-node nodes-here) and currently-carrying [
+    set assigned-to-luggage false
+    set currently-carrying false
+  ]
+end

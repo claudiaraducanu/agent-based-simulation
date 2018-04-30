@@ -158,7 +158,6 @@ let chargePoints patches with [
 end
  
 to set-up-connectivity
-  
   ask nodes-on patches with [(pxcor = 15) and (pycor = -8)] [create-link-to one-of nodes-on patches with [(pxcor = 15) and (pycor = -8)] ]
   
   ask connectivity [set hidden? false]

@@ -31,11 +31,9 @@ agvs-own[
 ]
 
 luggages-own[
-  target-node
-  assigned
-  on-carrier
-  carrier
   age
+  destination
+  utility-offer
 ]
 
 charge-nodes-own[
@@ -66,6 +64,7 @@ to go
   ask agvs [agv-go]
   ask charge-nodes [charge-nodes-go]
   generate-luggage-service
+  ask luggages [luggage-go]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW

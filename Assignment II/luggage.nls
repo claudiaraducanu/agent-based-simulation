@@ -18,37 +18,38 @@ to set-up-delivery-infra
   ])
 end
 
+;; PROBABLY HAVE TO DELETE
 to set-up-belt-links
   let nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 14) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
   ask nodes-to-delete-links-from [ ask my-links [die] ]
   set nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 15) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
   ;ask connectivity [ set hidden? true]
   ask nodes-to-delete-links-from [ create-connectivity-to nodes-on patch-at-heading-and-distance 270 1 ]
- 
-
 end
+
+to luggage-setup
+  set age 0
+  set destination one-of delivery-nodes
+  set heading 270
+  
+  set color one-of base-colors
+  set shape "box"
+  set size 0.5
+  ask target-node [
+    set hidden? false
+    set color [color] of myself
+  ]                    
+end
+
+to luggage-go
+  luggage-age
+  luggage-move
+end
+
 
 to generate-luggage-service
   if (random-float 1) <= ( (1) / (6 * luggage-time) ) [
-    ask one-of feeder-belt-generators [luggage-generate] ]
-  ask luggages [luggage-move]
-  ask luggages [luggage-invite]
-  ask luggages [luggage-hop-on]
-  ask luggages [luggage-hop-off]
-  ask luggages [luggage-age]
-end
-
-to luggage-generate
-   sprout-luggages 1 [set color one-of base-colors
-                      set shape "box"
-                      set size 0.5
-                      set heading 270
-                      set target-node one-of delivery-nodes
-                      ask target-node [set hidden? false
-                                       set color [color] of myself]
-                      set assigned false
-                      set on-carrier false 
-                      set age 0
+    ask one-of feeder-belt-generators [sprout-luggages 1 [ luggage-setup ] ] 
   ]
 end
 
@@ -64,6 +65,14 @@ to luggage-move
      ]
    ]
 end
+
+
+
+
+
+
+
+
 
 to luggage-invite
   let my-location-node one-of nodes-here
