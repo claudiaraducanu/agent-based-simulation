@@ -1,5 +1,6 @@
 __includes [ "environment.nls"
-             "luggage.nls"]
+             "luggage.nls"
+             "agvs.nls"]
 
 extensions [ nw ]
 
@@ -52,60 +53,6 @@ end
 to go
   ask agvs [agv-go]
   generate-luggage-service
-end
-
-
-to agv-setup
-  set shape "lander"
-  set color 8
-  set battery-life 500
-  set availability true
-  set label-color black
-  set current-luggage-set false
-  set-my-target-node-randomly
-end
-
-to agv-go
-  ask-my-current-node-to-set-my-next-node
-  face next-node
-  move-to next-node
-  if current-luggage-set [ ask current-luggage [move-to myself]]
-  set label battery-life
-  if battery-life < 60 [
-    set temp-target-node target-node
-    set target-node one-of charge-nodes]
-  charge-agv
-end
-
-
-to ask-my-current-node-to-set-my-next-node
-  if not member? target-node nodes-here [ ask nodes-here [set-my-next-node] ]
-end
-
-to set-my-next-node
-  ;ask nodes-here [nw:turtles-on-path-to turtle 101]
-  let list-of-nodes nw:turtles-on-path-to [target-node] of myself
-  if is-list? list-of-nodes
-     [let agv-next-node item 1 list-of-nodes
-        ask myself [ set next-node agv-next-node ]]
-end
-
-to set-my-target-node-randomly
-  set target-node one-of nodes
-  ask target-node [set color red]
-end
-
-to set-my-target-node [nodey]
-  set target-node nodey
-end
-
-to charge-agv
-  ifelse any? charge-nodes-here and battery-life < 500 [
-     set battery-life (battery-life + 25)
-    if battery-life = 500 [ set target-node temp-target-node ]
-  ][
-     set battery-life (battery-life - 1)
-  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
