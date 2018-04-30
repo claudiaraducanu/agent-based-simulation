@@ -29,7 +29,7 @@ to set-up-belt-links
 end
 
 to generate-luggage-service
-  if (random-float 1) <= ( (1) / luggage-time ) [
+  if (random-float 1) <= ( (1) / (6 * luggage-time) ) [
     ask one-of feeder-belt-generators [luggage-generate] ]
   ask luggages [luggage-move]
   ask luggages [luggage-invite]
@@ -67,23 +67,18 @@ end
 
 to luggage-invite
   let my-location-node one-of nodes-here
-  let currently-available-agvs (agvs with [availability = true])
+  let currently-available-agvs (agvs with [mode = "r" or mode = "c"])
   if not assigned and xcor = 10 and any? currently-available-agvs [
     set assigned true
-    
+    let reward (1 * e ^ ( 1 * age) )
     ask (one-of currently-available-agvs) [ 
-      ;set reward-p to reward
-      set reward-p reward [ age ] 
-      set-my-target-node my-location-node
-      set availability false 
+      set reward-p reward
       
+      set-my-target-node my-location-node
+      set mode "p" 
   ] 
   ]
 end
-
-to-report reward [ n ]
-  report 1 * e ^ ( 1 * n)
-end 
 
 
 ;FIX SO THAT YOU CAN HOP ON ONLY ON THE ASSIGNED AGV
