@@ -25,7 +25,8 @@ agvs-own[
   battery-life
   availability
   current-luggage-set
-  current-luggage\
+  current-luggage
+  reward-pc
 ]
 
 luggages-own[

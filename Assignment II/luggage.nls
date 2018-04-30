@@ -35,6 +35,7 @@ to generate-luggage-service
   ask luggages [luggage-invite]
   ask luggages [luggage-hop-on]
   ask luggages [luggage-hop-off]
+  ask luggages [luggage-age]
 end
 
 to luggage-generate
@@ -46,7 +47,14 @@ to luggage-generate
                       ask target-node [set hidden? false
                                        set color [color] of myself]
                       set assigned false
-                      set on-carrier false ]
+                      set on-carrier false 
+                      set age 0
+  ]
+end
+
+to luggage-age
+  set age ( age + 1 )
+  set label age 
 end
 
 to luggage-move
@@ -60,11 +68,23 @@ end
 to luggage-invite
   let my-location-node one-of nodes-here
   let currently-available-agvs (agvs with [availability = true])
-  
-  if not assigned and xcor = 10 and any? currently-available-agvs [ set assigned true
-                                                                    ask (one-of currently-available-agvs) [ set-my-target-node my-location-node
-                                                                    set availability false ] ]
+  if not assigned and xcor = 10 and any? currently-available-agvs [
+    set assigned true
+    
+    ask (one-of currently-available-agvs) [ 
+      ;set reward-p to reward
+      set reward-p reward [ age ] 
+      set-my-target-node my-location-node
+      set availability false 
+      
+  ] 
+  ]
 end
+
+to-report reward [ n ]
+  report 1 * e ^ ( 1 * n)
+end 
+
 
 ;FIX SO THAT YOU CAN HOP ON ONLY ON THE ASSIGNED AGV
 to luggage-hop-on

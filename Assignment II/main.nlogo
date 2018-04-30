@@ -1,7 +1,6 @@
 __includes [ "environment.nls"
              "luggage.nls"
-             "agvs.nls"
-             "chargenodes.nls"]
+             "agvs.nls"]
 
 extensions [ nw ]
 
@@ -22,9 +21,12 @@ globals [
 agvs-own[
   next-node
   target-node
-  assigned-to-luggage
-  currently-carrying
-  mode
+  temp-target-node
+  battery-life
+  availability
+  current-luggage-set
+  current-luggage
+  reward-p
 ]
 
 luggages-own[
@@ -35,23 +37,14 @@ luggages-own[
   age
 ]
 
-charge-nodes-own[
-  reserved
-  available
-]
-
 
 to setup
   clear-all
   reset-ticks
   resize-world -26 20 -14 15
   ask patches [ set pcolor [196 228 95] ]
-
-  setup-infra
-  ask charge-nodes [setup-chargenodes]
-
-  ;;Potentially delete
   set num-of-delivered 0
+  setup-infra
   setup-collectPoints
   set-up-luggage-infra
   set-up-delivery-infra
@@ -61,7 +54,6 @@ end
 
 to go
   ask agvs [agv-go]
-  ask charge-nodes [charge-nodes-go]
   generate-luggage-service
 end
 @#$#@#$#@
@@ -133,7 +125,7 @@ luggage-time
 luggage-time
 5
 20
-10.0
+5.0
 5
 1
 NIL
