@@ -33,7 +33,7 @@ luggages-own[
   assigned
   on-carrier
   carrier
-  age
+
 ]
 
 
