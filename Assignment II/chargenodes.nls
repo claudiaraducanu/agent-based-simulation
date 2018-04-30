@@ -1,0 +1,13 @@
+to charge-nodes-go
+
+end
+
+to setup-chargenodes
+  set pcolor 27
+  set shape "lightning"
+  set color black
+  set size 0.8
+  
+  set reserved false
+  set available true
+end

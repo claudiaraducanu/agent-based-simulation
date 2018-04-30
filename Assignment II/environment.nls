@@ -135,9 +135,8 @@ to setup-infra
     (pxcor = 7) and (pycor = -8) or
     (pxcor = 5) and (pycor = -8)
   ]
-  ask chargePoints [set pcolor 27]
   
-  ask chargePoints [ sprout-charge-nodes 1 [set shape "lightning"]]
+  ask chargePoints [ sprout-charge-nodes 1 ]
 
   let chargestructure patches with [
     (pxcor = 14) and (pycor = -8) or
@@ -151,8 +150,6 @@ to setup-infra
   
  ; SET UP THE NODES
   ask nodes [ set hidden? true
-    set size 0.8]
-  ask charge-nodes [ set color black
     set size 0.8]
   ask nodes [ create-connectivity-to nodes-on neighbors4]
   ask nodes [ create-connectivity-to charge-nodes-on neighbors4]

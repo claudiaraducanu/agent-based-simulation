@@ -1,6 +1,7 @@
 __includes [ "environment.nls"
              "luggage.nls"
-             "agvs.nls"]
+             "agvs.nls"
+             "chargenodes.nls"]
 
 extensions [ nw ]
 
@@ -34,14 +35,23 @@ luggages-own[
   age
 ]
 
+charge-nodes-own[
+  reserved
+  available
+]
+
 
 to setup
   clear-all
   reset-ticks
   resize-world -26 20 -14 15
   ask patches [ set pcolor [196 228 95] ]
-  set num-of-delivered 0
+
   setup-infra
+  ask charge-nodes [setup-chargenodes]
+
+  ;;Potentially delete
+  set num-of-delivered 0
   setup-collectPoints
   set-up-luggage-infra
   set-up-delivery-infra
@@ -51,6 +61,7 @@ end
 
 to go
   ask agvs [agv-go]
+  ask charge-nodes [charge-nodes-go]
   generate-luggage-service
 end
 @#$#@#$#@
