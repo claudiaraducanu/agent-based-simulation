@@ -1,14 +1,21 @@
 to agv-setup
   set shape "lander"
   set color 8
-  set battery-life 500
-  set availability true
   set label-color black
-  set current-luggage-set false
-  set-my-target-node-randomly
+  
+  
+  set battery-life 500
+  set assigned-to-luggage false
+  set currently-carrying false
+  set mode "r"
 end
 
 to agv-go
+  dead-agv-set-battery-drained-on
+  alive-agv-set-battery-drained-on
+  move-dead-agv-to-charging-spot
+  
+  ;;to remove:
   ask-my-current-node-to-set-my-next-node
   face next-node
   move-to next-node
@@ -19,6 +26,28 @@ to agv-go
     set target-node one-of charge-nodes]
   charge-agv
 end
+
+to dead-agv-set-battery-drained-on
+  if (battery-life < 1) and (battery-drained-on = 0) [
+    set battery-drained-on tick
+  ]
+end
+
+to alive-agv-set-battery-drained-on
+  if battery-life > 0 [
+    set battery-drained-on 0
+  ]
+end
+
+to move-dead-agv-to-charging-spot
+  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > tick+30) [
+    move-to one-of charge-nodes with [available = true and reserved = false]
+    set battery-drained-on 0
+  ]
+end
+
+
+
 
 
 to ask-my-current-node-to-set-my-next-node
