@@ -37,8 +37,10 @@ agvs-own[
   utility-r
   agv-KC1
   agv-KC2
-  agv-KS
+  agv-KS1
+  agv-KS2
   reserved-charge-spot
+  last-highest-bid-luggage
 ]
 
 luggages-own[
@@ -134,7 +136,7 @@ number-of-robots
 number-of-robots
 4
 10
-7.0
+4.0
 3
 1
 NIL
@@ -162,7 +164,7 @@ BUTTON
 66
 NIL
 go
-T
+NIL
 1
 T
 OBSERVER
@@ -192,7 +194,7 @@ global-KC1
 global-KC1
 0
 10
-1.1
+3.9
 0.1
 1
 NIL
@@ -218,11 +220,11 @@ SLIDER
 110
 1631
 143
-global-KS
-global-KS
+global-KS1
+global-KS1
 0
 10
-1.0
+0.9
 0.1
 1
 NIL
@@ -230,9 +232,9 @@ HORIZONTAL
 
 SLIDER
 1459
-154
+190
 1631
-187
+223
 global-L1
 global-L1
 0
@@ -245,14 +247,29 @@ HORIZONTAL
 
 SLIDER
 1460
-198
+234
 1632
-231
+267
 global-L2
 global-L2
 0
 10
 6.4
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1459
+147
+1631
+180
+global-KS2
+global-KS2
+0
+10
+1.0
 0.1
 1
 NIL
