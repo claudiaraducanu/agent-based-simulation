@@ -2,7 +2,12 @@ globals [
   ; To be filled in
 ]
 
+extensions [ nw ]
+
 breed [luggageCollectPoints luggageCollectPoint]
+breed [nodes node]
+breed [charge-nodes charge-node]
+directed-link-breed [ connectivity connection ]
 
 to setup
   clear-all
@@ -11,7 +16,19 @@ to setup
   ask patches [ set pcolor [196 228 95] ]
   setup-infra
   setup-collectPoints
+  ask charge-nodes [setup-chargenodes]
+  set-up-connectivity
 end
+
+
+to setup-chargenodes
+  set pcolor 27
+  set shape "lightning"
+  set color black
+  set size 0.8
+end
+
+
 
 ; ****** Setup of the platform infrastructure ******
 to setup-infra
@@ -46,6 +63,7 @@ to setup-infra
 
   ]
   ask paths [ set pcolor white ]
+  ask paths [ sprout-nodes 1 [set shape "x"]]
 
   let feeder-belt patches with [
     ((pxcor <= 14) and (pxcor >= 10) and (pycor = 8)) or
@@ -159,6 +177,33 @@ to setup-infra
     (pxcor = 6) and (pycor = -8)
   ]
   ask chargestructure [set pcolor black]
+
+
+
+; SET UP THE NODES
+  ask nodes [ ;set hidden? true
+    set size 0.8
+    set color blue]
+  ;ask nodes [ create-connectivity-to nodes-on neighbors4]
+  ;ask nodes [ create-connectivity-to charge-nodes-on neighbors4]
+
+
+end
+
+to set-up-connectivity
+
+  ask nodes-on patches with [(pxcor = 15) and (pycor = -8)] [create-link-to one-of nodes-on patches with [(pxcor = 14) and (pycor = -8)] ]
+  ask connectivity [set color red]
+
+  let topline -24
+  ask nodes-on patches with [(pxcor = topline) and (pycor = 10)] [create-link-to one-of nodes-on patches with [(pxcor = (topline + 1 )) and (pycor = 10)] ]
+  loop [
+     let topline-it (topline + 1)
+     ask nodes-on patches with [(pxcor = ( topline-it - 1) ) and (pycor = 10)] [create-link-to one-of nodes-on patches with [(pxcor = topline-it ) and (pycor = 10)] ]
+     if topline-it = 7 [ stop ]
+  ]
+
+  ;ask connectivity [set hidden? false]
 end
 
 ; ****** Setup of the collectpoints ******
@@ -227,8 +272,8 @@ GRAPHICS-WINDOW
 20
 -14
 15
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -259,7 +304,7 @@ number-of-robots
 number-of-robots
 4
 10
-4.0
+0.0
 3
 1
 NIL
@@ -274,7 +319,7 @@ luggage-time
 luggage-time
 5
 20
-5.0
+0.0
 5
 1
 NIL
