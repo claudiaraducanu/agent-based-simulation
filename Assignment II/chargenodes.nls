@@ -15,7 +15,8 @@ end
 to charge-node-agv-on 
   let patches-on-and-above-me patch-set patch-here (patch-at-heading-and-distance 0 1) (patch-at-heading-and-distance 0 2) 
   ifelse any? agvs-on patches-on-and-above-me[ 
-    set available false 
+    set available false
+    set reserved false 
   ][ 
     set available true 
   ] 

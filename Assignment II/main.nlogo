@@ -36,6 +36,7 @@ agvs-own[
   agv-KC1
   agv-KC2
   agv-KS
+  reserved-charge-spot
 ]
 
 luggages-own[
