@@ -23,7 +23,7 @@ to agv-go
   go-to-pick-assigned-luggage
   carry-to-luggage-destination
   release-luggage
-  copy-global-parameters
+  agv-copy-global-parameters
   calculate-utility-c
   calculate-utility-p
   calculate-utility-r
@@ -50,14 +50,15 @@ to dead-agv-set-battery-drained-on
 end
  
 to alive-agv-set-battery-drained-on
-  if battery-life > 0 [
+  if battery-life > 1 [
     set battery-drained-on 0
   ]
 end
  
 to move-dead-agv-to-charging-spot
-  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > ticks + 30) [
+  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > ticks - 30) [
     move-to one-of charge-nodes with [available = true and reserved = false]
+    ask charge-nodes-here [ set available false ]
     set battery-drained-on 0
     set mode "c"
   ]
@@ -70,7 +71,7 @@ to charge-agv
 end
 
 to move-forward
-  if (target-node != nobody) and (not member? target-node nodes-here) and (battery-life > 0) [
+  if (target-node != nobody) and (not member? target-node nodes-here) and (not member? target-node charge-nodes-here) and (battery-life > 0) [
     ask one-of nodes-here [ set-my-next-node ]
     if not any? agvs-on ([patch-here] of next-node) [
       face next-node
@@ -113,7 +114,7 @@ to release-luggage
   ]
 end
 
-to copy-global-parameters
+to agv-copy-global-parameters
   set agv-KC1 global-KC1
   set agv-KC2 global-KC2
   set agv-KS1 global-KS1
@@ -127,9 +128,11 @@ to calculate-utility-c
 end
 
 to calculate-utility-p
-  if ((mode = "c") or (mode = "r")) and (any? luggages with [utility-offer > 0]) [
+  ifelse ((mode = "c") or (mode = "r")) and (any? luggages with [utility-offer > 0]) [
     set last-highest-bid-luggage max-one-of (luggages with [utility-offer > 0]) [utility-offer]
-    set utility-p max [utility-offer] of last-highest-bid-luggage - agv-KL3 * ( nw:distance-to last-highest-bid-luggage) 
+    set utility-p [utility-offer] of last-highest-bid-luggage - agv-KL3 * (distance last-highest-bid-luggage) 
+  ][
+    set utility-p 0
   ]
 end
  
@@ -150,7 +153,7 @@ end
  
 to select-a-luggage
   if ((mode = "c") or (mode = "r")) and ( any? luggages) [
-    if (utility-p >= utility-r) and (utility-p >= utility-c)[
+    if (utility-p > utility-r) and (utility-p > utility-c)[
       set mode "p"
       set assigned-to-luggage last-highest-bid-luggage
       ask assigned-to-luggage [ set utility-offer -1 ]
@@ -160,7 +163,7 @@ end
 
 to select-to-charge
   if (mode = "c") or (mode = "r")[
-    if (utility-c >= utility-r) and (utility-c >= utility-p)[
+    if (utility-c > utility-r) and (utility-c > utility-p)[
       set mode "c"
     ]
   ]
@@ -183,7 +186,7 @@ end
 
 to select-to-roam
   if (mode = "c") or (mode = "r")[
-    if (utility-r >= utility-p) and (utility-r >= utility-c)[
+    if (utility-r > utility-p) and (utility-r > utility-c)[
       set mode "r"
     ]
   ]

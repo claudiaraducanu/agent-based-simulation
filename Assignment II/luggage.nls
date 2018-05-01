@@ -36,12 +36,14 @@ end
 to luggage-go
   luggage-age
   luggage-move
+  luggage-copy-global-parameters
+  luggage-calculate-utility-offer
   luggage-suicide
 end
 
 
 to generate-luggage-service
-  if (random-float 1) <= ( (1) / (6 * luggage-time) ) [
+  if (random-float 1) <= ( (1) / (luggage-time) ) [
     ask one-of feeder-belt-generators [sprout-luggages 1 [ luggage-setup ] ] 
   ]
 end
@@ -70,4 +72,9 @@ to luggage-suicide
     ask nodes-here [set hidden? true]
     die
   ]
+end
+
+to luggage-copy-global-parameters
+  set luggage-KL1 global-KL1
+  set luggage-KL2 global-KL2
 end

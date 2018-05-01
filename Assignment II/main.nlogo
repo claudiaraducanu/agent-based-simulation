@@ -77,6 +77,7 @@ to setup
 end
 
 to go
+  tick
   ask agvs [agv-go]
   ask charge-nodes [charge-nodes-go]
   generate-luggage-service
@@ -136,7 +137,7 @@ number-of-robots
 number-of-robots
 4
 10
-4.0
+7.0
 3
 1
 NIL
@@ -151,7 +152,7 @@ luggage-time
 luggage-time
 5
 20
-5.0
+10.0
 5
 1
 NIL
@@ -194,7 +195,7 @@ global-KC1
 global-KC1
 0
 10
-3.9
+7.8
 0.1
 1
 NIL
@@ -209,7 +210,7 @@ global-KC2
 global-KC2
 0
 10
-1.5
+5.3
 0.1
 1
 NIL
@@ -224,7 +225,7 @@ global-KS1
 global-KS1
 0
 10
-0.9
+0.6
 0.1
 1
 NIL
@@ -239,7 +240,7 @@ global-KL1
 global-KL1
 0
 10
-5.2
+0.3
 0.1
 1
 NIL
@@ -254,7 +255,7 @@ global-KL2
 global-KL2
 0
 10
-6.3
+0.9
 0.1
 1
 NIL
@@ -269,7 +270,7 @@ global-KL3
 global-KL3
 0
 10
-1.0
+0.8
 0.1
 1
 NIL
