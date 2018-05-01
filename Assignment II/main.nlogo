@@ -38,7 +38,7 @@ agvs-own[
   agv-KC1
   agv-KC2
   agv-KS1
-  agv-KS2
+  agv-KL3
   reserved-charge-spot
   last-highest-bid-luggage
 ]
@@ -235,11 +235,11 @@ SLIDER
 190
 1631
 223
-global-L1
-global-L1
+global-KL1
+global-KL1
 0
 10
-5.3
+5.2
 0.1
 1
 NIL
@@ -250,11 +250,11 @@ SLIDER
 234
 1632
 267
-global-L2
-global-L2
+global-KL2
+global-KL2
 0
 10
-6.4
+6.3
 0.1
 1
 NIL
@@ -262,11 +262,11 @@ HORIZONTAL
 
 SLIDER
 1459
-147
+274
 1631
-180
-global-KS2
-global-KS2
+307
+global-KL3
+global-KL3
 0
 10
 1.0
