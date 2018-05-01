@@ -16,6 +16,11 @@ globals [
   feeder-belt-generators
   delivery-nodes
   num-of-delivered
+  global-KC1
+  global-KC2
+  global-KS
+  global-KL1
+  global-KL2
 ]
 
 agvs-own[
@@ -28,12 +33,17 @@ agvs-own[
   reward-c
   reward-p
   reward-s
+  agv-KC1
+  agv-KC2
+  agv-KS
 ]
 
 luggages-own[
   age
   destination
   utility-offer
+  luggage-KL1
+  luggage-KL2
 ]
 
 charge-nodes-own[

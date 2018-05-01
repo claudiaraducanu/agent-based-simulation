@@ -84,3 +84,9 @@ to release-luggage
     set currently-carrying false
   ]
 end
+
+to calculate-utility-c
+  if (mode="c") or (mode="r")[
+    set utility-c 
+  ]
+end
