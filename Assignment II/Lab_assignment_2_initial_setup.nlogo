@@ -1,3 +1,11 @@
+__includes [
+             "env-belt.nls"
+             "env-charging.nls"
+  "env-highway.nls"
+  "env-chuteways.nls"
+]
+
+
 globals [
   ; To be filled in
 ]
@@ -23,7 +31,7 @@ end
 
 to setup-chargenodes
   set pcolor 27
-  set shape "lightning"
+  ;set shape "lightning"
   set color black
   set size 0.8
 end
@@ -159,7 +167,7 @@ to setup-infra
   ]
   ask chutes [set pcolor 108]
 
-  let chargePoints patches with [
+let chargePoints patches with [
     (pxcor = 15) and (pycor = -8) or
     (pxcor = 13) and (pycor = -8) or
     (pxcor = 11) and (pycor = -8) or
@@ -167,7 +175,8 @@ to setup-infra
     (pxcor = 7) and (pycor = -8) or
     (pxcor = 5) and (pycor = -8)
   ]
-  ask chargePoints [set pcolor 27]
+
+  ask chargePoints [ sprout-charge-nodes 1 ]
 
   let chargestructure patches with [
     (pxcor = 14) and (pycor = -8) or
@@ -179,11 +188,10 @@ to setup-infra
   ask chargestructure [set pcolor black]
 
 
-
 ; SET UP THE NODES
-  ask nodes [ ;set hidden? true
+  ask nodes [ set hidden? true
     set size 0.8
-    set color blue]
+    ]
   ;ask nodes [ create-connectivity-to nodes-on neighbors4]
   ;ask nodes [ create-connectivity-to charge-nodes-on neighbors4]
 
@@ -191,19 +199,10 @@ to setup-infra
 end
 
 to set-up-connectivity
-
-  ask nodes-on patches with [(pxcor = 15) and (pycor = -8)] [create-link-to one-of nodes-on patches with [(pxcor = 14) and (pycor = -8)] ]
-  ask connectivity [set color red]
-
-  let topline -24
-  ask nodes-on patches with [(pxcor = topline) and (pycor = 10)] [create-link-to one-of nodes-on patches with [(pxcor = (topline + 1 )) and (pycor = 10)] ]
-  loop [
-     let topline-it (topline + 1)
-     ask nodes-on patches with [(pxcor = ( topline-it - 1) ) and (pycor = 10)] [create-link-to one-of nodes-on patches with [(pxcor = topline-it ) and (pycor = 10)] ]
-     if topline-it = 7 [ stop ]
-  ]
-
-  ;ask connectivity [set hidden? false]
+  setup-belts
+  setup-charging
+  setup-highway
+  setup-chuteways
 end
 
 ; ****** Setup of the collectpoints ******
