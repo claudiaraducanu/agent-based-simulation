@@ -8,6 +8,7 @@ to agv-setup
   set currently-carrying false
   set mode "r"
   set reserved-charge-spot nobody
+  set target-node ( one-of nodes-at 15 10 ) 
 end
  
 to agv-go
@@ -59,8 +60,8 @@ to charge-agv
 end
 
 to move-forward
-  if (not member? target-node nodes-here) and (battery-life > 0) and (mode != "c") [
-    set-my-next-node
+  if (target-node != nobody) and (not member? target-node nodes-here) and (battery-life > 0) and (mode != "c") [
+    ask one-of nodes-here [ set-my-next-node ]
     if not any? agvs-on ([patch-here] of next-node) [
       face next-node
       move-to next-node
@@ -82,7 +83,7 @@ to go-to-pick-assigned-luggage
 end
 
 to carry-to-luggage-destination
-  if member? assigned-to-luggage luggages-here [
+  if ( assigned-to-luggage != nobody) and ( member? assigned-to-luggage luggages-here ) [
     set currently-carrying true
     set target-node [destination] of assigned-to-luggage
   ]
@@ -108,7 +109,7 @@ to calculate-utility-c
 end
 
 to calculate-utility-p
-  if (mode = "c") or (mode = "r")[
+  if ((mode = "c") or (mode = "r")) and (any? luggages) [
     set utility-p max [utility-offer] of luggages
   ]
 end
@@ -119,13 +120,17 @@ to calculate-utility-r
       set utility-r 0
     ][
       let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-luggage != nobody] )
-      set utility-r ( (1 - agv-KS) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )
+      ifelse any? set-of-not-charging-nor-delivering-agvs[
+        set utility-r ( (1 - agv-KS) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )
+      ][
+        set utility-r 0
+      ]
     ]
   ]
 end
 
 to select-a-luggage
-  if (mode = "c") or (mode = "r")[
+  if ((mode = "c") or (mode = "r")) and ( any? luggages) [
     if (utility-p >= utility-r) and (utility-p >= utility-c)[
       set mode "p"
       set assigned-to-luggage max-one-of luggages [utility-offer]

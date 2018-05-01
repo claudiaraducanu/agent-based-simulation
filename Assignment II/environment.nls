@@ -163,6 +163,7 @@ to set-up-connectivity
   setup-highway
   setup-chuteways
   ;ask connectivity [ set hidden? true]
+  ask connectivity [ set weight 1 ]
 end
  
 ; ****** Setup of the collectpoints ******

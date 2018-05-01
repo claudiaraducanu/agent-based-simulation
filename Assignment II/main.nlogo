@@ -22,11 +22,6 @@ globals [
   feeder-belt-generators
   delivery-nodes
   num-of-delivered
-  global-KC1
-  global-KC2
-  global-KS
-  global-KL1
-  global-KL2
 ]
 
 agvs-own[
@@ -59,6 +54,7 @@ charge-nodes-own[
   available
 ]
 
+connectivity-own[ weight ]
 
 to setup
   clear-all
@@ -138,7 +134,7 @@ number-of-robots
 number-of-robots
 4
 10
-0.0
+7.0
 3
 1
 NIL
@@ -153,7 +149,7 @@ luggage-time
 luggage-time
 5
 20
-0.0
+10.0
 5
 1
 NIL
@@ -186,6 +182,81 @@ num-of-delivered
 1
 1
 11
+
+SLIDER
+1460
+24
+1632
+57
+global-KC1
+global-KC1
+0
+10
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1459
+69
+1631
+102
+global-KC2
+global-KC2
+0
+10
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1459
+110
+1631
+143
+global-KS
+global-KS
+0
+10
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1459
+154
+1631
+187
+global-L1
+global-L1
+0
+10
+1.0
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+1460
+198
+1632
+231
+global-L2
+global-L2
+0
+10
+1.0
+0.1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
