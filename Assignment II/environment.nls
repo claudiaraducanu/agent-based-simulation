@@ -139,6 +139,7 @@ let chargePoints patches with [
   ]
   
   ask chargePoints [ sprout-charge-nodes 1 ]
+  ask chargePoints [ sprout-nodes 1 ]
  
   let chargestructure patches with [
     (pxcor = 14) and (pycor = -8) or

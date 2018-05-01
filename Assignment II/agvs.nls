@@ -8,17 +8,20 @@ to agv-setup
   set currently-carrying false
   set mode "r"
   set reserved-charge-spot nobody
-  set target-node ( one-of nodes-at 15 10 ) 
+  to-roam 
 end
  
 to agv-go
+  decrease-battery
   dead-agv-set-battery-drained-on
   alive-agv-set-battery-drained-on
   move-dead-agv-to-charging-spot
   charge-agv
   move-forward
+  carry-luggage-forward
   go-to-pick-assigned-luggage
   carry-to-luggage-destination
+  release-luggage
   copy-global-parameters
   calculate-utility-c
   calculate-utility-p
@@ -31,6 +34,12 @@ to agv-go
   to-roam
   
   set label battery-life
+end
+
+to decrease-battery
+  if battery-life > -1 [
+    set battery-life battery-life - 1 
+  ]
 end
  
 to dead-agv-set-battery-drained-on
@@ -60,12 +69,18 @@ to charge-agv
 end
 
 to move-forward
-  if (target-node != nobody) and (not member? target-node nodes-here) and (battery-life > 0) and (mode != "c") [
+  if (target-node != nobody) and (not member? target-node nodes-here) and (battery-life > 0) [
     ask one-of nodes-here [ set-my-next-node ]
     if not any? agvs-on ([patch-here] of next-node) [
       face next-node
       move-to next-node
     ]
+  ]
+end
+
+to carry-luggage-forward
+  if ( assigned-to-luggage != nobody ) and ( currently-carrying = true ) [
+    ask assigned-to-luggage [move-to myself]
   ]
 end
 
@@ -93,6 +108,7 @@ to release-luggage
   if (member? target-node nodes-here) and currently-carrying [
     set assigned-to-luggage nobody
     set currently-carrying false
+    set mode "r"
   ]
 end
 
@@ -172,10 +188,10 @@ end
 
 to to-roam
   if (mode = "r")[
-    ifelse (xcor = 7) and (ycor = -5) [
-      set target-node ( one-of nodes-at 15 10 ) 
+    ifelse (xcor = 7) and (ycor = -5) and  (member? target-node nodes-here) [
+      set target-node ( one-of nodes with [ xcor = 15 and ycor = 10] ) 
     ][
-      set target-node ( one-of nodes-at 7 -5 )
+      set target-node ( one-of nodes with [ xcor = 7  and ycor = -5] )
     ]
   ]
 end

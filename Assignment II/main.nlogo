@@ -149,7 +149,7 @@ luggage-time
 luggage-time
 5
 20
-10.0
+5.0
 5
 1
 NIL
@@ -192,7 +192,7 @@ global-KC1
 global-KC1
 0
 10
-1.0
+1.1
 0.1
 1
 NIL
@@ -207,7 +207,7 @@ global-KC2
 global-KC2
 0
 10
-1.0
+1.5
 0.1
 1
 NIL
@@ -237,7 +237,7 @@ global-L1
 global-L1
 0
 10
-1.0
+5.3
 0.1
 1
 NIL
@@ -252,7 +252,7 @@ global-L2
 global-L2
 0
 10
-1.0
+6.4
 0.1
 1
 NIL

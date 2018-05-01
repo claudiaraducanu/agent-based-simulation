@@ -22,7 +22,7 @@ to luggage-setup
   set age 0
   set destination one-of delivery-nodes
   set heading 270
-  set utility-offer 2
+  set utility-offer 0
   
   set color one-of base-colors
   set shape "box"
@@ -36,6 +36,7 @@ end
 to luggage-go
   luggage-age
   luggage-move
+  luggage-suicide
 end
 
 
@@ -58,50 +59,15 @@ to luggage-move
    ]
 end
 
+to luggage-calculate-utility-offer
+  if (utility-offer != -1) and ( xcor = 10 )[
+    set utility-offer luggage-KL1 * exp ( luggage-KL2 * age )
+  ]
+end
 
-
-
-
-
-
-
-
-;;to luggage-invite
-;;  let my-location-node one-of nodes-here
-;;  let currently-available-agvs (agvs with [mode = "r" or mode = "c"])
-;;  if not assigned and xcor = 10 and any? currently-available-agvs [
-;;    set assigned true
-;;    let reward (1 * e ^ ( 1 * age) )
-;;    ask (one-of currently-available-agvs) [ 
-;;      set reward-p reward
-      
-;;      set-my-target-node my-location-node
-;;      set mode "p" 
-;;  ] 
-;;  ]
-;;end
-
-
-;FIX SO THAT YOU CAN HOP ON ONLY ON THE ASSIGNED AGV
-;;to luggage-hop-on
-;;  let my-target-node target-node
-;;  if not on-carrier and assigned and any? agvs-here [ 
-;;    let my-carrier one-of agvs-here
-;;    ask my-carrier [ set-my-target-node my-target-node]
-;;    ask my-carrier [ set current-luggage myself]
-;;    ask my-carrier [ set current-luggage-set true]
-;;    set carrier my-carrier
-;;    set on-carrier true
-;;    ]
-;;end
-
-
-;;to luggage-hop-off
-;;  if on-carrier and member? target-node nodes-here [
-;;    set num-of-delivered (num-of-delivered + 1)
-;;    ask carrier [ set current-luggage-set false]
-;;    ask carrier [ set availability true]
-;;    ask target-node [set hidden? true]
-;;    die
-;;  ]
-;;end
+to luggage-suicide
+  if member? destination nodes-here[
+    ask nodes-here [set hidden? true]
+    die
+  ]
+end
