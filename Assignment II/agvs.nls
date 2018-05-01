@@ -8,6 +8,7 @@ to agv-setup
   set currently-carrying false
   set mode "r"
   set reserved-charge-spot nobody
+  set target-node one-of nodes with [ xcor = 15 and ycor = 10]
   to-roam 
 end
  
@@ -28,9 +29,9 @@ to agv-go
   calculate-utility-r
   select-a-luggage
   select-to-charge
+  select-to-roam
   claim-charge-spot
   free-charge-spot
-  select-to-roam
   to-roam
   
   set label battery-life
@@ -116,7 +117,7 @@ to copy-global-parameters
   set agv-KC1 global-KC1
   set agv-KC2 global-KC2
   set agv-KS1 global-KS1
-  set agv-KS2 global-KS2
+  set agv-KL3 global-KL3
 end
 
 to calculate-utility-c
@@ -126,11 +127,12 @@ to calculate-utility-c
 end
 
 to calculate-utility-p
-  if ((mode = "c") or (mode = "r")) and (any? luggages) [
-    set utility-p max [utility-offer] of luggages
+  if ((mode = "c") or (mode = "r")) and (any? luggages with [utility-offer > 0]) [
+    set last-highest-bid-luggage max-one-of (luggages with [utility-offer > 0]) [utility-offer]
+    set utility-p max [utility-offer] of last-highest-bid-luggage - agv-KL3 * ( nw:distance-to last-highest-bid-luggage) 
   ]
 end
-
+ 
 to calculate-utility-r
   if (mode = "c") or (mode = "r")[
     ifelse (any? charge-nodes with [available = true and reserved = false])[
@@ -138,21 +140,19 @@ to calculate-utility-r
     ][
       let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-luggage != nobody] )
       ifelse any? set-of-not-charging-nor-delivering-agvs[
-        set last-highest-bid-luggage max-one-of set-of-not-charging-nor-delivering-agvs [utility-offer]
-        set utility-r ( (1 - agv-KS1) * ( [utility-c] of last-highest-bid-luggage ) - agv-KS2 * ( nw:distance-to last-highest-bid-luggage) )
+        set utility-r ( (1 - agv-KS1) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )
       ][
         set utility-r 0
       ]
     ]
   ]
 end
-
+ 
 to select-a-luggage
   if ((mode = "c") or (mode = "r")) and ( any? luggages) [
     if (utility-p >= utility-r) and (utility-p >= utility-c)[
       set mode "p"
       set assigned-to-luggage last-highest-bid-luggage
-      set last-highest-bid-luggage nobody
       ask assigned-to-luggage [ set utility-offer -1 ]
     ]
   ]
