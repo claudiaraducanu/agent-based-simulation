@@ -22,6 +22,12 @@ to agv-go
   calculate-utility-c
   calculate-utility-p
   calculate-utility-r
+  select-a-luggage
+  select-to-charge
+  claim-charge-spot
+  free-charge-spot
+  select-to-roam
+  to-roam
   
   set label battery-life
 end
