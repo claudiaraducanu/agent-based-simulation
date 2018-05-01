@@ -34,7 +34,7 @@ end
  
 to dead-agv-set-battery-drained-on
   if (battery-life < 1) and (battery-drained-on = 0) [
-    set battery-drained-on tick
+    set battery-drained-on ticks
   ]
 end
  
@@ -45,7 +45,7 @@ to alive-agv-set-battery-drained-on
 end
  
 to move-dead-agv-to-charging-spot
-  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > tick+30) [
+  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > ticks + 30) [
     move-to one-of charge-nodes with [available = true and reserved = false]
     set battery-drained-on 0
     set mode "c"
@@ -59,9 +59,9 @@ to charge-agv
 end
 
 to move-forward
-  if (target-node not in nodes-here) and (battery-life > 0) and (mode not "c") [
+  if (not member? target-node nodes-here) and (battery-life > 0) and (mode != "c") [
     set-my-next-node
-    if not any? agvs-on (patch-here of next-node) [
+    if not any? agvs-on ([patch-here] of next-node) [
       face next-node
       move-to next-node
     ]
@@ -102,30 +102,30 @@ to copy-global-parameters
 end
 
 to calculate-utility-c
-  if (mode="c") or (mode="r")[
-    set utility-c (agv-KC1 * exp (-agv-KC2 * battery-life) )
+  if (mode = "c") or (mode = "r")[
+    set utility-c (agv-KC1 * exp (- agv-KC2 * battery-life) )
   ]
 end
 
 to calculate-utility-p
-  if (mode="c") or (mode="r")[
+  if (mode = "c") or (mode = "r")[
     set utility-p max [utility-offer] of luggages
   ]
 end
 
 to calculate-utility-r
-  if (mode="c") or (mode="r")[
+  if (mode = "c") or (mode = "r")[
     ifelse (any? charge-nodes with [available = true and reserved = false])[
       set utility-r 0
     ][
-      let set-of-not-charging-nor-delivering-agvs ( agvs with [mode not "c" and assigned-to-luggage != nobody] )
+      let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-luggage != nobody] )
       set utility-r ( (1 - agv-KS) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )
     ]
   ]
 end
 
 to select-a-luggage
-  if (mode="c") or (mode="r")[
+  if (mode = "c") or (mode = "r")[
     if (utility-p >= utility-r) and (utility-p >= utility-c)[
       set mode "p"
       set assigned-to-luggage max-one-of luggages [utility-offer]
@@ -135,7 +135,7 @@ to select-a-luggage
 end
 
 to select-to-charge
-  if (mode="c") or (mode="r")[
+  if (mode = "c") or (mode = "r")[
     if (utility-c >= utility-r) and (utility-c >= utility-p)[
       set mode "c"
     ]
@@ -143,7 +143,7 @@ to select-to-charge
 end
 
 to claim-charge-spot
-  if (mode="c") and (not any? charge-nodes-here) and (not is-charge-node? target-node) and (any? charge-nodes with [available = true and reserved = false]) [
+  if (mode = "c") and (not any? charge-nodes-here) and (not is-charge-node? target-node) and (any? charge-nodes with [available = true and reserved = false]) [
     set target-node one-of charge-nodes with [available = true and reserved = false]
     set reserved-charge-spot target-node
     ask reserved-charge-spot [ set reserved true ]
@@ -151,26 +151,26 @@ to claim-charge-spot
 end
 
 to free-charge-spot
-  if ((mode="p") or (mode="r")) and ( reserved-charge-spot != nobody ) [
+  if ((mode = "p") or (mode = "r")) and ( reserved-charge-spot != nobody ) [
     ask reserved-charge-spot [ set reserved false ]
     set reserved-charge-spot nobody
   ]
 end
 
 to select-to-roam
-  if (mode="c") or (mode="r")[
+  if (mode = "c") or (mode = "r")[
     if (utility-r >= utility-p) and (utility-r >= utility-c)[
-      set mode="r"
+      set mode "r"
     ]
   ]
 end
 
 to to-roam
-  if (mode="r")[
-    if (xcor = 7) and (ycor = -5)[
-      set target-node node-at patches with [ (xcor = 15) and (ycor = 10) ]
+  if (mode = "r")[
+    ifelse (xcor = 7) and (ycor = -5) [
+      set target-node ( one-of nodes-at 15 10 ) 
     ][
-      set target-node node-at patches with [ (xcor = 7) and (ycor = -5) ]
+      set target-node ( one-of nodes-at 7 -5 )
     ]
   ]
 end

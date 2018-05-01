@@ -18,15 +18,6 @@ to set-up-delivery-infra
   ])
 end
 
-;; PROBABLY HAVE TO DELETE
-to set-up-belt-links
-  let nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 14) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
-  ask nodes-to-delete-links-from [ ask my-links [die] ]
-  set nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 15) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
-  ;ask connectivity [ set hidden? true]
-  ask nodes-to-delete-links-from [ create-connectivity-to nodes-on patch-at-heading-and-distance 270 1 ]
-end
-
 to luggage-setup
   set age 0
   set destination one-of delivery-nodes
@@ -74,42 +65,42 @@ end
 
 
 
-to luggage-invite
-  let my-location-node one-of nodes-here
-  let currently-available-agvs (agvs with [mode = "r" or mode = "c"])
-  if not assigned and xcor = 10 and any? currently-available-agvs [
-    set assigned true
-    let reward (1 * e ^ ( 1 * age) )
-    ask (one-of currently-available-agvs) [ 
-      set reward-p reward
+;;to luggage-invite
+;;  let my-location-node one-of nodes-here
+;;  let currently-available-agvs (agvs with [mode = "r" or mode = "c"])
+;;  if not assigned and xcor = 10 and any? currently-available-agvs [
+;;    set assigned true
+;;    let reward (1 * e ^ ( 1 * age) )
+;;    ask (one-of currently-available-agvs) [ 
+;;      set reward-p reward
       
-      set-my-target-node my-location-node
-      set mode "p" 
-  ] 
-  ]
-end
+;;      set-my-target-node my-location-node
+;;      set mode "p" 
+;;  ] 
+;;  ]
+;;end
 
 
 ;FIX SO THAT YOU CAN HOP ON ONLY ON THE ASSIGNED AGV
-to luggage-hop-on
-  let my-target-node target-node
-  if not on-carrier and assigned and any? agvs-here [ 
-    let my-carrier one-of agvs-here
-    ask my-carrier [ set-my-target-node my-target-node]
-    ask my-carrier [ set current-luggage myself]
-    ask my-carrier [ set current-luggage-set true]
-    set carrier my-carrier
-    set on-carrier true
-    ]
-end
+;;to luggage-hop-on
+;;  let my-target-node target-node
+;;  if not on-carrier and assigned and any? agvs-here [ 
+;;    let my-carrier one-of agvs-here
+;;    ask my-carrier [ set-my-target-node my-target-node]
+;;    ask my-carrier [ set current-luggage myself]
+;;    ask my-carrier [ set current-luggage-set true]
+;;    set carrier my-carrier
+;;    set on-carrier true
+;;    ]
+;;end
 
 
-to luggage-hop-off
-  if on-carrier and member? target-node nodes-here [
-    set num-of-delivered (num-of-delivered + 1)
-    ask carrier [ set current-luggage-set false]
-    ask carrier [ set availability true]
-    ask target-node [set hidden? true]
-    die
-  ]
-end
+;;to luggage-hop-off
+;;  if on-carrier and member? target-node nodes-here [
+;;    set num-of-delivered (num-of-delivered + 1)
+;;    ask carrier [ set current-luggage-set false]
+;;    ask carrier [ set availability true]
+;;    ask target-node [set hidden? true]
+;;    die
+;;  ]
+;;end

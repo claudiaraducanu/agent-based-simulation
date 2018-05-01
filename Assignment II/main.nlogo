@@ -32,13 +32,14 @@ globals [
 agvs-own[
   next-node
   target-node
+  battery-life
   assigned-to-luggage
   currently-carrying
   mode
   battery-drained-on
-  reward-c
-  reward-p
-  reward-s
+  utility-c
+  utility-p
+  utility-r
   agv-KC1
   agv-KC2
   agv-KS
@@ -67,13 +68,13 @@ to setup
 
   setup-infra
   ask charge-nodes [setup-chargenodes]
+  set-up-connectivity
 
   ;;Potentially delete
   set num-of-delivered 0
   setup-collectPoints
   set-up-luggage-infra
   set-up-delivery-infra
-  set-up-belt-links
   ask n-of number-of-robots nodes [ ask patch-here [sprout-agvs 1 [agv-setup] ] ]
 end
 

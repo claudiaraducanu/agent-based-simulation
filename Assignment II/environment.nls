@@ -41,6 +41,8 @@ to setup-infra
     ((pxcor <= 14) and (pxcor >= 10) and (pycor = 0)) or
     ((pxcor <= 14) and (pxcor >= 10) and (pycor = -3))
   ]
+  
+  ask feeder-belt [set pcolor green - 2]
 
 
   let chutes patches with [
@@ -151,10 +153,7 @@ let chargePoints patches with [
  ; SET UP THE NODES
   ask nodes [ set hidden? true
     set size 0.8]
-  ask nodes [ create-connectivity-to nodes-on neighbors4]
-  ask nodes [ create-connectivity-to charge-nodes-on neighbors4]
-  
-  
+
 end
  
 
@@ -163,7 +162,7 @@ to set-up-connectivity
   setup-charging
   setup-highway
   setup-chuteways
-  ask connection [ set hidden? true]
+  ;ask connectivity [ set hidden? true]
 end
  
 ; ****** Setup of the collectpoints ******

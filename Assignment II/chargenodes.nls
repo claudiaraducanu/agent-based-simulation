@@ -13,7 +13,9 @@ to setup-chargenodes
 end
  
 to charge-node-agv-on 
-  let patches-on-and-above-me patch-set patch-here (patch-at-heading-and-distance 0 1) (patch-at-heading-and-distance 0 2) 
+  let patch-on-top patch-at-heading-and-distance 0 1
+  let patch-on-top-on-top patch-at-heading-and-distance 0 2
+  let patches-on-and-above-me (patch-set patch-here patch-on-top patch-on-top-on-top )
   ifelse any? agvs-on patches-on-and-above-me[ 
     set available false
     set reserved false 
