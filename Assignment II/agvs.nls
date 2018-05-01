@@ -139,13 +139,32 @@ end
 to claim-charge-spot
   if (mode="c") and (not any? charge-nodes-here) and (not is-charge-node? target-node) and (any? charge-nodes with [available = true and reserved = false]) [
     set target-node one-of charge-nodes with [available = true and reserved = false]
+    set reserved-charge-spot target-node
+    ask reserved-charge-spot [ set reserved true ]
+  ]
+end
+
+to free-charge-spot
+  if ((mode="p") or (mode="r")) and ( reserved-charge-spot != nobody ) [
+    ask reserved-charge-spot [ set reserved false ]
+    set reserved-charge-spot nobody
   ]
 end
 
 to select-to-roam
   if (mode="c") or (mode="r")[
     if (utility-r >= utility-p) and (utility-r >= utility-c)[
-      set
+      set mode="r"
+    ]
+  ]
+end
+
+to to-roam
+  if (mode="r")[
+    if (xcor = 7) and (ycor = -5)[
+      set target-node node-at patches with [ (xcor = 15) and (ycor = 10) ]
+    ][
+      set target-node node-at patches with [ (xcor = 7) and (ycor = -5) ]
     ]
   ]
 end
