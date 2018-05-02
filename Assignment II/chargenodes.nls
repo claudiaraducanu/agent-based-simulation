@@ -1,5 +1,6 @@
 to charge-nodes-go
   charge-node-agv-on 
+  charge-node-free-itself
 end
  
 to setup-chargenodes
@@ -10,6 +11,7 @@ to setup-chargenodes
   
   set reserved false
   set available true
+  set reserved-by nobody
 end
  
 to charge-node-agv-on 
@@ -22,4 +24,11 @@ to charge-node-agv-on
   ][ 
     set available true 
   ] 
+end
+
+to charge-node-free-itself
+  if (reserved-by = nobody) or ([mode] of reserved-by != "c") or ([reserved-charge-spot] of reserved-by = nobody) [
+    set reserved-by nobody
+    set reserved false
+  ]
 end

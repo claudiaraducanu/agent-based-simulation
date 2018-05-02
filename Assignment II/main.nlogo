@@ -6,7 +6,6 @@ __includes [ "environment.nls"
   "env-charging.nls"
   "env-highway.nls"
   "env-chuteways.nls"
-
 ]
 
 extensions [ nw ]
@@ -33,6 +32,7 @@ agvs-own[
   target-node
   battery-life
   assigned-to-luggage
+  assigned-to-belt
   currently-carrying
   mode
   battery-drained-on
@@ -42,10 +42,8 @@ agvs-own[
   agv-KC1
   agv-KC2
   agv-KS1
-  agv-KL3
   reserved-charge-spot
-  last-highest-bid-luggage
-  last-distance-to-bid-luggage
+  last-distance-to-belt
 ]
 
 luggages-own[
@@ -54,11 +52,13 @@ luggages-own[
   utility-offer
   luggage-KL1
   luggage-KL2
+  claimed
 ]
 
 charge-nodes-own[
   reserved
   available
+  reserved-by
 ]
 
 connectivity-own[ weight ]
@@ -88,7 +88,8 @@ to go
   ask luggages [luggage-go]
   ask agvs [agv-go]
   ask charge-nodes [charge-nodes-go]
-  generate-luggage-service
+  generate-luggage-service-notrandom
+  ask luggageCollectPoints [luggageCollectPoints-go]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -144,8 +145,8 @@ number-of-robots
 number-of-robots
 4
 10
-7.0
-3
+10.0
+1
 1
 NIL
 HORIZONTAL
@@ -159,8 +160,8 @@ luggage-time
 luggage-time
 5
 20
-20.0
-5
+10.0
+1
 1
 NIL
 HORIZONTAL
@@ -191,7 +192,7 @@ global-KC1
 global-KC1
 0
 10
-0.4
+0.1
 0.1
 1
 NIL
@@ -206,7 +207,7 @@ global-KC2
 global-KC2
 0
 10
-0.5
+0.1
 0.1
 1
 NIL
@@ -221,7 +222,7 @@ global-KS1
 global-KS1
 0
 10
-0.6
+0.1
 0.1
 1
 NIL
@@ -236,7 +237,7 @@ global-KL1
 global-KL1
 0
 10
-1.7
+0.9
 0.1
 1
 NIL
@@ -251,7 +252,7 @@ global-KL2
 global-KL2
 0
 10
-0.9
+0.7
 0.1
 1
 NIL
@@ -266,7 +267,7 @@ global-KL3
 global-KL3
 0
 10
-10.0
+0.1
 0.1
 1
 NIL
@@ -344,7 +345,7 @@ MONITOR
 488
 AGV utilization
 luggage-carrying-ticks / ( ticks * number-of-robots )
-2
+4
 1
 15
 

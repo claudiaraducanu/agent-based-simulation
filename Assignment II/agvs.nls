@@ -5,6 +5,7 @@ to agv-setup
   
   set battery-life 500
   set assigned-to-luggage nobody
+  set assigned-to-belt nobody
   set currently-carrying false
   set mode "r"
   set reserved-charge-spot nobody
@@ -21,13 +22,12 @@ to agv-go
   move-forward
   carry-luggage-forward
   go-to-pick-assigned-luggage
+  pick-up-luggage
   carry-to-luggage-destination
   release-luggage
   agv-copy-global-parameters
   calculate-utility-c
-  calculate-utility-p
   calculate-utility-r
-  select-a-luggage
   select-to-charge
   select-to-roam
   claim-charge-spot
@@ -65,15 +65,11 @@ to move-dead-agv-to-charging-spot
     ask charge-nodes-here [ set available false ]
     set battery-drained-on 0
     set mode "c"
-    if ( assigned-to-luggage != nobody ) and ( currently-carrying = true ) [
-      ask assigned-to-luggage [ move-to one-of feeder-belt-generators ]
-      ask assigned-to-luggage [set utility-offer 0]
-      set assigned-to-luggage nobody
-      set currently-carrying false
-    ]
-    if ( assigned-to-luggage != nobody ) and ( currently-carrying = false ) [
-      ask assigned-to-luggage [set utility-offer 0]
-      set assigned-to-luggage nobody
+    if ( reserved-charge-spot != nobody ) [
+      ask reserved-charge-spot [ set reserved false ]
+      ask reserved-charge-spot [set reserved-by nobody]
+      set reserved-charge-spot nobody
+      
     ]
   ]
 end
@@ -109,8 +105,14 @@ to set-my-next-node
 end
 
 to go-to-pick-assigned-luggage
-  if (assigned-to-luggage != nobody) and (not currently-carrying) [
-    set target-node one-of nodes-on assigned-to-luggage
+  if (assigned-to-belt != nobody) and (not currently-carrying) [
+    set target-node one-of nodes-on assigned-to-belt
+  ]
+end
+
+to pick-up-luggage
+  if (assigned-to-belt != nobody) and (assigned-to-luggage = nobody) and (member? assigned-to-belt luggageCollectPoints-here)[
+    set assigned-to-luggage one-of luggages-here
   ]
 end
 
@@ -124,6 +126,7 @@ end
 to release-luggage
   if (member? target-node nodes-here) and currently-carrying [
     set assigned-to-luggage nobody
+    set assigned-to-belt nobody
     set currently-carrying false
     set mode "r"
   ]
@@ -133,29 +136,11 @@ to agv-copy-global-parameters
   set agv-KC1 global-KC1
   set agv-KC2 global-KC2
   set agv-KS1 global-KS1
-  set agv-KL3 global-KL3
 end
 
 to calculate-utility-c
   if (mode = "c") or (mode = "r")[
     set utility-c (agv-KC1 * exp (- agv-KC2 * battery-life) )
-  ]
-end
-
-to calculate-utility-p
-  ifelse ((mode = "c") or (mode = "r")) and (any? luggages with [utility-offer > 0]) and (battery-life > 100 ) [
-    set last-highest-bid-luggage max-one-of (luggages with [utility-offer > 0]) [utility-offer]
-    ask one-of nodes-here [ set-my-last-distance-to-bid-luggage ]
-    set utility-p [utility-offer] of last-highest-bid-luggage - agv-KL3 * (last-distance-to-bid-luggage) 
-  ][
-    set utility-p 0
-  ]
-end
-
-to set-my-last-distance-to-bid-luggage  
-  let dist  nw:distance-to ([last-highest-bid-luggage] of myself)
-  if dist != false[
-    ask myself [ set last-distance-to-bid-luggage dist ]
   ]
 end
  
@@ -164,7 +149,7 @@ to calculate-utility-r
     ifelse (any? charge-nodes with [available = true and reserved = false])[
       set utility-r 0
     ][
-      let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-luggage != nobody] )
+      let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-belt != nobody] )
       ifelse any? set-of-not-charging-nor-delivering-agvs[
         set utility-r ( (1 - agv-KS1) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )
       ][
@@ -174,20 +159,34 @@ to calculate-utility-r
   ]
 end
  
-to select-a-luggage
-  if ((mode = "c") or (mode = "r")) and ( any? luggages) [
-    if (utility-p > utility-r) and (utility-p > utility-c)[
+to consider-a-luggage [ candidate-belt concerned-luggage ]
+  if ((mode = "c") or (mode = "r")) [
+    if ( [ utility-offer] of concerned-luggage > utility-r) and ( [ utility-offer] of concerned-luggage > utility-c) and battery-life > 150 [
       set mode "p"
-      set assigned-to-luggage last-highest-bid-luggage
-      ask assigned-to-luggage [ set utility-offer -1 ]
+      set assigned-to-belt candidate-belt
+      ask concerned-luggage [ set claimed true ]
     ]
   ]
 end
 
 to select-to-charge
   if (mode = "c") or (mode = "r")[
-    if (utility-c > utility-r) and (utility-c > utility-p)[
+    if (utility-c > utility-r)[
       set mode "c"
+    ]
+  ]
+end
+
+
+to select-to-roam
+  if (mode = "c") or (mode = "r")[
+    if (utility-r > utility-c)[
+      set mode "r"
+      if ( reserved-charge-spot != nobody ) [
+        ask reserved-charge-spot [ set reserved false ]
+        ask reserved-charge-spot [ set reserved-by nobody ]
+        set reserved-charge-spot nobody
+      ]
     ]
   ]
 end
@@ -197,27 +196,31 @@ to claim-charge-spot
     ifelse (any? charge-nodes with [available = true and reserved = false]) [
       set target-node one-of charge-nodes with [available = true and reserved = false]
       set reserved-charge-spot target-node
-      ask reserved-charge-spot [ set reserved true ]
+      ask reserved-charge-spot [
+        set reserved true 
+        set color red
+      ]
+      ask reserved-charge-spot [set reserved-by myself]
     ][
       set mode "r"
+      if ( reserved-charge-spot != nobody ) [
+        ask reserved-charge-spot [ set reserved false ]
+        ask reserved-charge-spot [set reserved-by nobody]
+        set reserved-charge-spot nobody
+        
+      ]
     ]
   ]
 end
 
 to free-charge-spot
   if ((mode = "p") or (mode = "r")) and ( reserved-charge-spot != nobody ) [
-    ask reserved-charge-spot [ set reserved false ]
+    ask reserved-charge-spot [ set reserved false 
+    set color green]
     set reserved-charge-spot nobody
   ]
 end
 
-to select-to-roam
-  if (mode = "c") or (mode = "r")[
-    if (utility-r > utility-p) and (utility-r > utility-c)[
-      set mode "r"
-    ]
-  ]
-end
 
 to to-roam
   if (mode = "r")[
@@ -227,4 +230,8 @@ to to-roam
       set target-node ( one-of nodes with [ xcor = 7  and ycor = -5] )
     ]
   ]
+end
+
+to calculate-distance-to-belt [ node-to-calc-to ]
+  set last-distance-to-belt 7 ;nw:distance-to node-to-calc-to
 end

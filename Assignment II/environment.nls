@@ -27,7 +27,13 @@ to setup-infra
     ((pycor <= -3) and (pycor >= -7) and (pxcor = 5)) or
     ((pycor <= -5) and (pycor >= -7) and (pxcor = 9)) or
     ((pycor <= -5) and (pycor >= -7) and (pxcor = 11)) or
-    ((pycor <= -5) and (pycor >= -7) and (pxcor = 13))
+    ((pycor <= -5) and (pycor >= -7) and (pxcor = 13)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 8)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 5)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 6)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = -1)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = 0)) or
+    ((pxcor <= 14) and (pxcor >= 10) and (pycor = -3))
  
   ]
   ask paths [ set pcolor white ]
@@ -42,7 +48,9 @@ to setup-infra
     ((pxcor <= 14) and (pxcor >= 10) and (pycor = -3))
   ]
   
-  ask feeder-belt [set pcolor green - 2]
+  ask feeder-belt [
+    set pcolor green - 2
+  ]
 
 
   let chutes patches with [
@@ -163,7 +171,7 @@ to set-up-connectivity
   setup-charging
   setup-highway
   setup-chuteways
-  ;ask connectivity [ set hidden? true]
+  ask connectivity [ set hidden? true]
   ask connectivity [ set weight 1 ]
 end
  

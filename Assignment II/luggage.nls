@@ -23,6 +23,7 @@ to luggage-setup
   set destination one-of delivery-nodes
   set heading 270
   set utility-offer 0
+  set claimed false
   
   set color one-of base-colors
   set shape "box"
@@ -48,6 +49,12 @@ to generate-luggage-service
   ]
 end
 
+to generate-luggage-service-notrandom
+  if ticks mod luggage-time = 0 [
+    ask one-of feeder-belt-generators [sprout-luggages 1 [ luggage-setup ] ] 
+  ]
+end
+
 to luggage-age
   set age ( age + 1 )
   set label age 
@@ -56,7 +63,7 @@ end
 to luggage-move
    if xcor > 10 [
      if not any? luggages-on patch-ahead 1 [
-       fd 1
+      ask max-one-of luggages-here [age] [ fd 1 ]
      ]
    ]
 end
@@ -78,4 +85,21 @@ end
 to luggage-copy-global-parameters
   set luggage-KL1 global-KL1
   set luggage-KL2 global-KL2
+end
+
+
+to luggageCollectPoints-go
+  let my-ycor ycor
+  ;;set color one-of base-colors
+  ;;ask luggages with [ ycor = my-ycor ] [set color [color] of myself]
+  let unclaimed-luggages luggages with [ ycor = my-ycor and claimed = false ]
+  if any? unclaimed-luggages [
+    let available-agvs agvs with [ (mode = "c") or (mode = "r") ]
+    ask available-agvs [ calculate-distance-to-belt ( one-of nodes-here ) ]
+    let nearest-available-agv one-of available-agvs with-min [ last-distance-to-belt ]
+    if nearest-available-agv != nobody [
+      ask nearest-available-agv [ consider-a-luggage myself max-one-of unclaimed-luggages [age] ]
+      ;ask nearest-available-agv [ consider-a-luggage myself one-of unclaimed-luggages ]
+    ]
+  ]
 end
