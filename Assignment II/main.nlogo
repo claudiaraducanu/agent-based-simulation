@@ -195,7 +195,7 @@ global-KC1
 global-KC1
 0
 10
-7.8
+4.4
 0.1
 1
 NIL
@@ -210,7 +210,7 @@ global-KC2
 global-KC2
 0
 10
-5.3
+0.6
 0.1
 1
 NIL
@@ -275,6 +275,23 @@ global-KL3
 1
 NIL
 HORIZONTAL
+
+BUTTON
+70
+99
+133
+132
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?

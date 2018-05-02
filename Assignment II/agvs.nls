@@ -56,11 +56,22 @@ to alive-agv-set-battery-drained-on
 end
  
 to move-dead-agv-to-charging-spot
-  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on > ticks - 30) [
+  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on < ticks - 30) [
     move-to one-of charge-nodes with [available = true and reserved = false]
+    set target-node one-of nodes-here
     ask charge-nodes-here [ set available false ]
     set battery-drained-on 0
     set mode "c"
+    if ( assigned-to-luggage != nobody ) and ( currently-carrying = true ) [
+      ask assigned-to-luggage [ move-to one-of feeder-belt-generators ]
+      ask assigned-to-luggage [set utility-offer 0]
+      set assigned-to-luggage nobody
+      set currently-carrying false
+    ]
+    if ( assigned-to-luggage != nobody ) and ( currently-carrying = false ) [
+      ask assigned-to-luggage [set utility-offer 0]
+      set assigned-to-luggage nobody
+    ]
   ]
 end
  
