@@ -69,6 +69,7 @@ end
 
 to luggage-suicide
   if member? destination nodes-here[
+    set delivery-times insert-item 0 delivery-times age 
     ask nodes-here [set hidden? true]
     die
   ]

@@ -38,14 +38,17 @@ to agv-go
 end
 
 to decrease-battery
-  if battery-life > -1 [
+  if battery-life > 0 [
     set battery-life battery-life - 1 
+    set color 8
   ]
 end
  
 to dead-agv-set-battery-drained-on
   if (battery-life < 1) and (battery-drained-on = 0) [
     set battery-drained-on ticks
+    set color red
+    set dead-agvs dead-agvs + 1
   ]
 end
  
@@ -94,6 +97,7 @@ end
 to carry-luggage-forward
   if ( assigned-to-luggage != nobody ) and ( currently-carrying = true ) [
     ask assigned-to-luggage [move-to myself]
+    set luggage-carrying-ticks luggage-carrying-ticks + 1
   ]
 end
 
@@ -139,11 +143,19 @@ to calculate-utility-c
 end
 
 to calculate-utility-p
-  ifelse ((mode = "c") or (mode = "r")) and (any? luggages with [utility-offer > 0]) [
+  ifelse ((mode = "c") or (mode = "r")) and (any? luggages with [utility-offer > 0]) and (battery-life > 100 ) [
     set last-highest-bid-luggage max-one-of (luggages with [utility-offer > 0]) [utility-offer]
-    set utility-p [utility-offer] of last-highest-bid-luggage - agv-KL3 * (distance last-highest-bid-luggage) 
+    ask one-of nodes-here [ set-my-last-distance-to-bid-luggage ]
+    set utility-p [utility-offer] of last-highest-bid-luggage - agv-KL3 * (last-distance-to-bid-luggage) 
   ][
     set utility-p 0
+  ]
+end
+
+to set-my-last-distance-to-bid-luggage  
+  let dist  nw:distance-to ([last-highest-bid-luggage] of myself)
+  if dist != false[
+    ask myself [ set last-distance-to-bid-luggage dist ]
   ]
 end
  
@@ -181,10 +193,14 @@ to select-to-charge
 end
 
 to claim-charge-spot
-  if (mode = "c") and (not any? charge-nodes-here) and (not is-charge-node? target-node) and (any? charge-nodes with [available = true and reserved = false]) [
-    set target-node one-of charge-nodes with [available = true and reserved = false]
-    set reserved-charge-spot target-node
-    ask reserved-charge-spot [ set reserved true ]
+  if (mode = "c") and (not any? charge-nodes-here) and (not is-charge-node? target-node)[
+    ifelse (any? charge-nodes with [available = true and reserved = false]) [
+      set target-node one-of charge-nodes with [available = true and reserved = false]
+      set reserved-charge-spot target-node
+      ask reserved-charge-spot [ set reserved true ]
+    ][
+      set mode "r"
+    ]
   ]
 end
 

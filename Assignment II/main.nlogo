@@ -21,7 +21,11 @@ directed-link-breed [ connectivity connection ]
 globals [
   feeder-belt-generators
   delivery-nodes
-  num-of-delivered
+
+  ;Performance metrics:
+  delivery-times
+  luggage-carrying-ticks
+  dead-agvs
 ]
 
 agvs-own[
@@ -41,6 +45,7 @@ agvs-own[
   agv-KL3
   reserved-charge-spot
   last-highest-bid-luggage
+  last-distance-to-bid-luggage
 ]
 
 luggages-own[
@@ -65,23 +70,25 @@ to setup
   ask patches [ set pcolor [196 228 95] ]
 
   setup-infra
-  ask charge-nodes [setup-chargenodes]
-  set-up-connectivity
-
-  ;;Potentially delete
-  set num-of-delivered 0
   setup-collectPoints
   set-up-luggage-infra
   set-up-delivery-infra
+  ask charge-nodes [setup-chargenodes]
+  set-up-connectivity
+
+  set delivery-times []
+  set luggage-carrying-ticks 0
+  set dead-agvs 0
+
   ask n-of number-of-robots nodes [ ask patch-here [sprout-agvs 1 [agv-setup] ] ]
 end
 
 to go
   tick
+  ask luggages [luggage-go]
   ask agvs [agv-go]
   ask charge-nodes [charge-nodes-go]
   generate-luggage-service
-  ask luggages [luggage-go]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -112,10 +119,10 @@ ticks
 30.0
 
 BUTTON
-111
-35
-174
-68
+141
+17
+204
+50
 NIL
 setup
 NIL
@@ -129,10 +136,10 @@ NIL
 1
 
 SLIDER
-20
-319
-192
-352
+11
+55
+183
+88
 number-of-robots
 number-of-robots
 4
@@ -144,25 +151,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-21
-365
-193
-398
+12
+101
+184
+134
 luggage-time
 luggage-time
 5
 20
-10.0
+20.0
 5
 1
 NIL
 HORIZONTAL
 
 BUTTON
-37
-33
-100
-66
+10
+15
+73
+48
 NIL
 go
 NIL
@@ -175,52 +182,41 @@ NIL
 NIL
 1
 
-MONITOR
-20
-429
-144
-474
-NIL
-num-of-delivered
-1
-1
-11
-
 SLIDER
-1460
-24
-1632
-57
+13
+168
+185
+201
 global-KC1
 global-KC1
 0
 10
-4.4
+0.4
 0.1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1459
-69
-1631
-102
+12
+213
+184
+246
 global-KC2
 global-KC2
 0
 10
-0.6
+0.5
 0.1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1459
-110
-1631
-143
+12
+254
+184
+287
 global-KS1
 global-KS1
 0
@@ -232,25 +228,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-1459
-190
-1631
-223
+12
+334
+184
+367
 global-KL1
 global-KL1
 0
 10
-0.3
+1.7
 0.1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-1460
-234
-1632
-267
+13
+378
+185
+411
 global-KL2
 global-KL2
 0
@@ -262,25 +258,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-1459
-274
-1631
-307
+12
+418
+184
+451
 global-KL3
 global-KL3
 0
 10
-0.8
+10.0
 0.1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-70
-99
-133
-132
+76
+17
+139
+50
 NIL
 go
 T
@@ -292,6 +288,76 @@ NIL
 NIL
 NIL
 1
+
+PLOT
+1445
+13
+1741
+191
+Delivery time distribution
+NIL
+NIL
+0.0
+300.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 10.0 1 -16777216 true "" "histogram sublist delivery-times 0 200"
+
+PLOT
+1446
+198
+1740
+348
+Delivery time
+tick
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"mean" 1.0 0 -16777216 true "" "plotxy ticks (mean sublist delivery-times 0 200)"
+"95p" 10.0 0 -3026479 true "" "let sorted sort sublist delivery-times 0 200\nlet point item 190 sorted\nplotxy ticks point"
+
+MONITOR
+1445
+357
+1756
+418
+Throughput [delivered / 1000 ticks]
+1000 * length delivery-times / ticks
+1
+1
+15
+
+MONITOR
+1445
+427
+1758
+488
+AGV utilization
+luggage-carrying-ticks / ( ticks * number-of-robots )
+2
+1
+15
+
+MONITOR
+1444
+497
+1755
+558
+Deaths per 1000 ticks
+1000 * dead-agvs / (ticks * number-of-robots)
+4
+1
+15
 
 @#$#@#$#@
 ## WHAT IS IT?
