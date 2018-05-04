@@ -1,0 +1,208 @@
+to setup-chuteways
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	10	)] ]
+								
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	6	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	7	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	8	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	8	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	9	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	9	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	10	)] ]
+
+;;
+
+
+
+
+ ;;
+
+ ask nodes-on patches with [(pxcor =	5	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	-5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	-1	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	-1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	-2	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	-2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	-3	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	-3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	-4	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	-4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	-5	)] ]
+;;
+  
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	5	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	5	)] ]
+								
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	2	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	2	) and (pycor =	0	)] ]
+								
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-1	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-1	) and (pycor =	5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-4	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-4	) and (pycor =	0	)] ]
+								
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-7	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-7	) and (pycor =	5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-10	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-10	) and (pycor =	0	)] ]
+								
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-13	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-13	) and (pycor =	5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-16	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-16	) and (pycor =	0	)] ]
+								
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-19	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-19	) and (pycor =	5	)] ]
+								
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-22	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	0	)] ]
+								
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	0	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	1	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	1	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	2	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	2	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	3	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	3	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	4	)] ]
+ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	4	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-24	) and (pycor =	5	)] ]  
+  
+end

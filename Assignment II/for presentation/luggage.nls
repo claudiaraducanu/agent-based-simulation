@@ -1,0 +1,114 @@
+to set-up-luggage-infra  
+  set feeder-belt-generators (patches with [
+    ((pxcor = 14) and (pycor = 8)) or
+    ((pxcor = 14) and (pycor = 5)) or
+    ((pxcor = 14) and (pycor = 6)) or
+    ((pxcor = 14) and (pycor = -1)) or
+    ((pxcor = 14) and (pycor = 0)) or
+    ((pxcor = 14) and (pycor = -3))
+  ])
+end
+
+to set-up-delivery-infra
+  set delivery-nodes (nodes-on patches with [
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = 9)) or
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = 6)) or
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = -1)) or
+    ((pxcor <= 6) and (pxcor >= -23) and (pycor = -4))
+  ])
+end
+
+to luggage-setup
+  set age 0
+  set destination one-of delivery-nodes
+  set heading 270
+  set utility-offer 0
+  set claimed false
+  
+  set color one-of base-colors
+  set shape "box"
+  set size 0.5
+  ask destination [
+    set hidden? false
+    set color [color] of myself
+  ]                    
+end
+
+to luggage-go
+  luggage-age
+  luggage-move
+  luggage-copy-global-parameters
+  luggage-calculate-utility-offer
+  luggage-suicide
+  luggage-big-if-unclaimed
+end
+
+
+to generate-luggage-service
+  if (random-float 1) <= ( (1) / (luggage-time) ) [
+    ask one-of feeder-belt-generators [sprout-luggages 1 [ luggage-setup ] ] 
+  ]
+end
+
+to generate-luggage-service-notrandom
+  if ticks mod luggage-time = 0 [
+    ask one-of feeder-belt-generators [sprout-luggages 1 [ luggage-setup ] ] 
+  ]
+end
+
+to luggage-age
+  set age ( age + 1 )
+  set label age 
+end
+
+to luggage-move
+   if xcor > 10 [
+     if not any? luggages-on patch-ahead 1 [
+      ask max-one-of luggages-here [age] [ fd 1 ]
+     ]
+   ]
+end
+
+to luggage-calculate-utility-offer
+  if (utility-offer != -1) [
+    set utility-offer luggage-KL1 * exp ( luggage-KL2 * age )
+  ]
+end
+
+to luggage-suicide
+  if member? destination nodes-here[
+    set delivery-times insert-item 0 delivery-times age 
+    ask nodes-here [set hidden? true]
+    die
+  ]
+end
+
+to luggage-copy-global-parameters
+  set luggage-KL1 global-KL1
+  set luggage-KL2 global-KL2
+end
+
+
+to luggageCollectPoints-go
+  let my-ycor ycor
+  ;;set color one-of base-colors
+  ;;ask luggages with [ ycor = my-ycor ] [set color [color] of myself]
+  let unclaimed-luggages-here luggages with [ ycor = my-ycor and claimed = false ]
+  let unclaimed-luggages-everywhere luggages with [claimed = false ]
+  if (any? unclaimed-luggages-here) and  ( [age] of max-one-of unclaimed-luggages-here [age] = [age] of max-one-of unclaimed-luggages-everywhere [age] ) [
+    let available-agvs agvs with [ (mode = "c") or (mode = "r") ]
+    ask available-agvs [ calculate-distance-to-belt ( one-of nodes-here ) ]
+    let nearest-available-agv one-of available-agvs with-min [ last-distance-to-belt ]
+    if nearest-available-agv != nobody [
+      ask nearest-available-agv [ consider-a-luggage myself max-one-of unclaimed-luggages-here [age] ]
+    ]
+  ]
+end
+
+to luggage-big-if-unclaimed
+  ifelse claimed = false [
+    set size 1
+  ][
+    set size 0.5
+  ]
+end

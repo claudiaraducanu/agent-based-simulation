@@ -1,0 +1,237 @@
+to agv-setup
+  set shape "lander"
+  set color 8
+  set label-color black  
+  
+  set battery-life 500
+  set assigned-to-luggage nobody
+  set assigned-to-belt nobody
+  set currently-carrying false
+  set mode "r"
+  set reserved-charge-spot nobody
+  set target-node one-of nodes with [ xcor = 15 and ycor = 10]
+  to-roam 
+end
+ 
+to agv-go
+  decrease-battery
+  dead-agv-set-battery-drained-on
+  alive-agv-set-battery-drained-on
+  move-dead-agv-to-charging-spot
+  charge-agv
+  move-forward
+  carry-luggage-forward
+  go-to-pick-assigned-luggage
+  pick-up-luggage
+  carry-to-luggage-destination
+  release-luggage
+  agv-copy-global-parameters
+  calculate-utility-c
+  calculate-utility-r
+  select-to-charge
+  select-to-roam
+  claim-charge-spot
+  free-charge-spot
+  to-roam
+  
+  set label battery-life
+end
+
+to decrease-battery
+  if battery-life > 0 [
+    set battery-life battery-life - 1 
+    set color 8
+  ]
+end
+ 
+to dead-agv-set-battery-drained-on
+  if (battery-life < 1) and (battery-drained-on = 0) [
+    set battery-drained-on ticks
+    set color red
+    set dead-agvs dead-agvs + 1
+  ]
+end
+ 
+to alive-agv-set-battery-drained-on
+  if battery-life > 1 [
+    set battery-drained-on 0
+  ]
+end
+ 
+to move-dead-agv-to-charging-spot
+  if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on < ticks - 30) [
+    move-to one-of charge-nodes with [available = true and reserved = false]
+    set target-node one-of nodes-here
+    ask charge-nodes-here [ set available false ]
+    set battery-drained-on 0
+    set mode "c"
+    if ( reserved-charge-spot != nobody ) [
+      ask reserved-charge-spot [ set reserved false ]
+      ask reserved-charge-spot [set reserved-by nobody]
+      set reserved-charge-spot nobody
+      
+    ]
+  ]
+end
+ 
+to charge-agv
+  if any? charge-nodes-here and battery-life < 476 [
+     set battery-life (battery-life + 25)
+  ]
+end
+
+to move-forward
+  if (target-node != nobody) and (not member? target-node nodes-here) and (not member? target-node charge-nodes-here) and (battery-life > 0) [
+    ask one-of nodes-here [ set-my-next-node ]
+    if not any? agvs-on ([patch-here] of next-node) [
+      face next-node
+      move-to next-node
+    ]
+  ]
+end
+
+to carry-luggage-forward
+  if ( assigned-to-luggage != nobody ) and ( currently-carrying = true ) [
+    ask assigned-to-luggage [move-to myself]
+    set luggage-carrying-ticks luggage-carrying-ticks + 1
+  ]
+end
+
+to set-my-next-node
+  let list-of-nodes nw:turtles-on-weighted-path-to ([target-node] of myself) weight
+  if is-list? list-of-nodes
+     [let agv-next-node item 1 list-of-nodes
+        ask myself [ set next-node agv-next-node ]]
+end
+
+to go-to-pick-assigned-luggage
+  if (assigned-to-belt != nobody) and (not currently-carrying) [
+    set target-node one-of nodes-on assigned-to-belt
+  ]
+end
+
+to pick-up-luggage
+  if (assigned-to-belt != nobody) and (assigned-to-luggage = nobody) and (member? assigned-to-belt luggageCollectPoints-here)[
+    set assigned-to-luggage one-of luggages-here
+  ]
+end
+
+to carry-to-luggage-destination
+  if ( assigned-to-luggage != nobody) and ( member? assigned-to-luggage luggages-here ) [
+    set currently-carrying true
+    set target-node [destination] of assigned-to-luggage
+  ]
+end
+
+to release-luggage
+  if (member? target-node nodes-here) and currently-carrying [
+    set assigned-to-luggage nobody
+    set assigned-to-belt nobody
+    set currently-carrying false
+    set mode "r"
+  ]
+end
+
+to agv-copy-global-parameters
+  set agv-KC1 global-KC1
+  set agv-KC2 global-KC2
+  set agv-KS1 global-KS1
+end
+
+to calculate-utility-c
+  if (mode = "c") or (mode = "r")[
+    set utility-c (agv-KC1 * exp (- agv-KC2 * battery-life) )
+  ]
+end
+ 
+to calculate-utility-r
+  if (mode = "c") or (mode = "r")[
+    ifelse (any? charge-nodes with [available = true and reserved = false])[
+      set utility-r 0
+    ][
+      let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-belt != nobody] )
+      ifelse any? set-of-not-charging-nor-delivering-agvs[
+        set utility-r ( (1 - agv-KS1) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )
+      ][
+        set utility-r 0
+      ]
+    ]
+  ]
+end
+ 
+to consider-a-luggage [ candidate-belt concerned-luggage ]
+  if ((mode = "c") or (mode = "r")) [
+    if ( [ utility-offer] of concerned-luggage > utility-r) and ( [ utility-offer] of concerned-luggage > utility-c) and battery-life > 150 [
+      set mode "p"
+      set assigned-to-belt candidate-belt
+      ask concerned-luggage [ set claimed true ]
+    ]
+  ]
+end
+
+to select-to-charge
+  if (mode = "c") or (mode = "r")[
+    if (utility-c > utility-r)[
+      set mode "c"
+    ]
+  ]
+end
+
+
+to select-to-roam
+  if (mode = "c") or (mode = "r")[
+    if (utility-r > utility-c)[
+      set mode "r"
+      if ( reserved-charge-spot != nobody ) [
+        ask reserved-charge-spot [ set reserved false ]
+        ask reserved-charge-spot [ set reserved-by nobody ]
+        set reserved-charge-spot nobody
+      ]
+    ]
+  ]
+end
+
+to claim-charge-spot
+  if (mode = "c") and (not any? charge-nodes-here) and (not is-charge-node? target-node)[
+    ifelse (any? charge-nodes with [available = true and reserved = false]) [
+      set target-node one-of charge-nodes with [available = true and reserved = false]
+      set reserved-charge-spot target-node
+      ask reserved-charge-spot [
+        set reserved true 
+        set color red
+      ]
+      ask reserved-charge-spot [set reserved-by myself]
+    ][
+      set mode "r"
+      if ( reserved-charge-spot != nobody ) [
+        ask reserved-charge-spot [ set reserved false ]
+        ask reserved-charge-spot [set reserved-by nobody]
+        set reserved-charge-spot nobody
+        
+      ]
+    ]
+  ]
+end
+
+to free-charge-spot
+  if ((mode = "p") or (mode = "r")) and ( reserved-charge-spot != nobody ) [
+    ask reserved-charge-spot [ set reserved false 
+    set color green]
+    set reserved-charge-spot nobody
+  ]
+end
+
+
+to to-roam
+  if (mode = "r")[
+    ifelse (xcor = 7) and (ycor = -5) and  (member? target-node nodes-here) [
+      set target-node ( one-of nodes with [ xcor = 15 and ycor = 10] ) 
+    ][
+      set target-node ( one-of nodes with [ xcor = 7  and ycor = -5] )
+    ]
+  ]
+end
+
+to calculate-distance-to-belt [ node-to-calc-to ]
+  set last-distance-to-belt 7 ;nw:distance-to node-to-calc-to
+end

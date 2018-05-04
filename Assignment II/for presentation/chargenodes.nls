@@ -1,0 +1,34 @@
+to charge-nodes-go
+  charge-node-agv-on 
+  charge-node-free-itself
+end
+ 
+to setup-chargenodes
+  set pcolor 27
+  set shape "lightning"
+  set color black
+  set size 0.8
+  
+  set reserved false
+  set available true
+  set reserved-by nobody
+end
+ 
+to charge-node-agv-on 
+  let patch-on-top patch-at-heading-and-distance 0 1
+  let patch-on-top-on-top patch-at-heading-and-distance 0 2
+  let patches-on-and-above-me (patch-set patch-here patch-on-top patch-on-top-on-top )
+  ifelse any? agvs-on patches-on-and-above-me[ 
+    set available false
+    set reserved false 
+  ][ 
+    set available true 
+  ] 
+end
+
+to charge-node-free-itself
+  if (reserved-by = nobody) or ([mode] of reserved-by != "c") or ([reserved-charge-spot] of reserved-by = nobody) [
+    set reserved-by nobody
+    set reserved false
+  ]
+end
