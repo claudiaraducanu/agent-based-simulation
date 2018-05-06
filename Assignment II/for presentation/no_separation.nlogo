@@ -2,10 +2,6 @@ __includes [ "environment.nls"
              "luggage.nls"
              "chargenodes.nls"
   "agvs.nls"
-  "env-belt.nls"
-  "env-charging.nls"
-  "env-highway.nls"
-  "env-chuteways.nls"
 ]
 
 extensions [ nw ]
