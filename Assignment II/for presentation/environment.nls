@@ -168,23 +168,14 @@ end
 
 to set-up-connectivity
   
-  ;setup-belts
-  ;setup-charging
-  ;setup-highway
-  ;setup-chuteways
-  ;ask connectivity [ set hidden? true
+  setup-belts
+  setup-charging
+  setup-highway
+  setup-chuteways
+  ask connectivity [ ;set hidden? true
   ;set color black
-  ;]
-  ;ask connectivity [ set weight 1 ]
-  ask nodes [ create-connectivity-to nodes-on neighbors4]
-  ask nodes [ create-connectivity-to charge-nodes-on neighbors4]
-  
- 
-  let nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 14) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
-  ask nodes-to-delete-links-from [ ask my-links [die] ]
-  set nodes-to-delete-links-from (nodes-on patches with [((pxcor <= 15) and (pxcor >= 10) and (pycor <= 8) and (pycor >= -3)) ])
-  ;ask connectivity [ set hidden? true]
-  ask nodes-to-delete-links-from [ create-connectivity-to nodes-on patch-at-heading-and-distance 270 1 ]
+  ]
+  ask connectivity [ set weight 1 ]
 end
  
 ; ****** Setup of the collectpoints ******
