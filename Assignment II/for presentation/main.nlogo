@@ -291,7 +291,7 @@ true
 false
 "" ""
 PENS
-"default" 10.0 1 -16777216 true "" "histogram sublist delivery-times 0 200"
+"default" 10.0 1 -16777216 true "" "ifelse length delivery-times < 201 [\n histogram delivery-times\n][\n histogram sublist delivery-times 0 200\n]"
 
 PLOT
 1446
@@ -309,9 +309,9 @@ true
 true
 "" ""
 PENS
-"mean" 1.0 0 -2674135 true "" "plotxy ticks (mean sublist delivery-times 0 200)"
-"95p" 10.0 0 -11053225 true "" "let sorted sort sublist delivery-times 0 200\nlet point item 190 sorted\nplotxy ticks point"
-"5p" 10.0 0 -11053225 true "" "let sorted sort sublist delivery-times 0 200\nlet point item 20 sorted\nplotxy ticks point"
+"mean" 1.0 0 -2674135 true "" "if length delivery-times > 0 [\nifelse length delivery-times < 201 [\n plotxy ticks (mean delivery-times)\n][\n plotxy ticks (mean sublist delivery-times 0 200)\n]\n]"
+"95p" 10.0 0 -11053225 true "" "if length delivery-times > 0 [\n ifelse length delivery-times < 201 [\n  let sorted sort delivery-times\n  let index floor length delivery-times * 0.95\n  let point item index sorted\n  plotxy ticks point\n ][\n  let sorted sort sublist delivery-times 0 200\n  let point item 190 sorted\n  plotxy ticks point\n ]\n]"
+"5p" 10.0 0 -11053225 true "" "if length delivery-times > 0 [\n ifelse length delivery-times < 201 [\n  let sorted sort delivery-times\n  let index floor length delivery-times * 0.05\n  let point item index sorted\n  plotxy ticks point\n ][\n  let sorted sort sublist delivery-times 0 200\n  let point item 10 sorted\n  plotxy ticks point\n ]\n]"
 
 MONITOR
 1445
