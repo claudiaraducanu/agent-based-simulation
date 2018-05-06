@@ -141,7 +141,7 @@ number-of-robots
 number-of-robots
 4
 10
-10.0
+7.0
 1
 1
 NIL
@@ -156,7 +156,7 @@ luggage-time
 luggage-time
 5
 20
-20.0
+8.0
 1
 1
 NIL
@@ -203,7 +203,7 @@ global-KC2
 global-KC2
 0
 1
-0.5
+0.1
 0.1
 1
 NIL
@@ -218,7 +218,7 @@ global-KS1
 global-KS1
 0
 1
-0.5
+0.1
 0.1
 1
 NIL
@@ -233,7 +233,7 @@ global-KL1
 global-KL1
 0
 1
-0.5
+0.1
 0.1
 1
 NIL
@@ -248,7 +248,7 @@ global-KL2
 global-KL2
 0
 1
-0.5
+0.1
 0.1
 1
 NIL
