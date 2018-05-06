@@ -71,7 +71,12 @@ end
 
 to luggage-calculate-utility-offer
   if (utility-offer != -1) [
-    set utility-offer luggage-KL1 * exp ( luggage-KL2 * age )
+    carefully [
+      set utility-offer luggage-KL1 * exp ( luggage-KL2 * age )
+    ] [
+      print "The exponent for the luggage utility offer is too big. Try adjusting the parameters."
+    ]
+    
   ]
 end
 
