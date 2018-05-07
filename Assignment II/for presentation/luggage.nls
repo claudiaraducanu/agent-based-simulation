@@ -19,6 +19,7 @@ to set-up-delivery-infra
 end
 
 to luggage-setup
+  ; initialization
   set age 0
   set destination one-of delivery-nodes
   set heading 270
@@ -28,6 +29,8 @@ to luggage-setup
   set color one-of base-colors
   set shape "box"
   set size 0.5
+  ; for visualization add a cross at the destination-node of the luggage
+  ; and color it based on the agv color
   ask destination [
     set hidden? false
     set color [color] of myself
@@ -35,6 +38,7 @@ to luggage-setup
 end
 
 to luggage-go
+  ; all luggage proceures
   luggage-age
   luggage-move
   luggage-copy-global-parameters
@@ -51,25 +55,32 @@ to generate-luggage-service
 end
 
 to generate-luggage-service-notrandom
+  ;; make time between each generation of luggage determined by the luggage-time slider
+  ;; luggages generated at a random feeder-belt at the rightmost patch
   if ticks mod luggage-time = 0 [
     ask one-of feeder-belt-generators [sprout-luggages 1 [ luggage-setup ] ] 
   ]
 end
 
 to luggage-age
+  ; age represents the elapsed time of a luggage since generation
+  ; and it increases at every tick by 1 unit
   set age ( age + 1 )
   set label age 
 end
 
 to luggage-move
+  ; if luggage is not at the left end of feeder belt it moves to the left end of belt 
+  ; if no agvs are in front of him
    if xcor > 10 [
      if not any? luggages-on patch-ahead 1 [
-      ask max-one-of luggages-here [age] [ fd 1 ]
+      ask max-one-of luggages-here [age] [ fd 1 ] ; oldest luggage gets priority to move first
      ]
    ]
 end
 
 to luggage-calculate-utility-offer
+  ; calculates agv gain of being in picking-up mode at next tick based on the age of the luggage
   if (utility-offer != -1) [
     carefully [
       set utility-offer luggage-KL1 * exp ( luggage-KL2 * age )
@@ -81,36 +92,40 @@ to luggage-calculate-utility-offer
 end
 
 to luggage-suicide
+  ; when a luggage is at the destination-node
+  ; the luggage dies
   if member? destination nodes-here[
-    set delivery-times insert-item 0 delivery-times age 
+    set delivery-times insert-item 0 delivery-times age  ; append age of luggage to the list of luggages delivery times
     ask nodes-here [set hidden? true]
     die
   ]
 end
 
 to luggage-copy-global-parameters
+  ; make parameters dependend on make  sliders
   set luggage-KL1 global-KL1
   set luggage-KL2 global-KL2
 end
 
 
 to luggageCollectPoints-go
-  let my-ycor ycor
-  ;;set color one-of base-colors
-  ;;ask luggages with [ ycor = my-ycor ] [set color [color] of myself]
-  let unclaimed-luggages-here luggages with [ ycor = my-ycor and claimed = false ]
-  let unclaimed-luggages-everywhere luggages with [claimed = false ]
+  let my-ycor ycor  ; coordinate used to distinguish between the 6 collection points
+  let unclaimed-luggages-here luggages with [ ycor = my-ycor and claimed = false ] ; agenset of luggages that are not yet assigned to an agv and are on the collection point
+  let unclaimed-luggages-everywhere luggages with [claimed = false ] ; agenset of luggages that are not yet assigned to an agv and are on the feeder-belt of that collection point
+  ; if the collectionn point has the luggage with the highest age on it then it will get assigned an agv first
   if (any? unclaimed-luggages-here) and  ( [age] of max-one-of unclaimed-luggages-here [age] = [age] of max-one-of unclaimed-luggages-everywhere [age] ) [
-    let available-agvs agvs with [ (mode = "c") or (mode = "r") ]
-    ask available-agvs [ calculate-distance-to-belt ( one-of nodes-here ) ]
-    let nearest-available-agv one-of available-agvs with-min [ last-distance-to-belt ]
-    if nearest-available-agv != nobody [
-      ask nearest-available-agv [ consider-a-luggage myself max-one-of unclaimed-luggages-here [age] ]
+    let available-agvs agvs with [ (mode = "c") or (mode = "r") ] ; find available agvs at that tick
+    ask available-agvs [ calculate-distance-to-belt ( one-of nodes-here ) ] ; find the distance on the graph to the collection of the agvs that are available
+    let nearest-available-agv one-of available-agvs with-min [ last-distance-to-belt ] ; find the nearest agv 
+    ; have this assigned to the luggage
+    if nearest-available-agv != nobody [  
+      ask nearest-available-agv [ consider-a-luggage myself max-one-of unclaimed-luggages-here [age] ]  
     ]
   ]
 end
 
 to luggage-big-if-unclaimed
+  ; procedure used for visual purporses to help distinguish when a luggage has been claimed
   ifelse claimed = false [
     set size 1
   ][

@@ -1,9 +1,11 @@
 to charge-nodes-go
+  ; all charge nodes procedures
   charge-node-agv-on 
   charge-node-free-itself
 end
  
 to setup-chargenodes
+  ; initialization
   set pcolor 27
   set shape "lightning"
   set color black
@@ -15,9 +17,12 @@ to setup-chargenodes
 end
  
 to charge-node-agv-on 
-  let patch-on-top patch-at-heading-and-distance 0 1
+  ; identify patches on narrow two way path to a charging node
+  let patch-on-top patch-at-heading-and-distance 0 1 
   let patch-on-top-on-top patch-at-heading-and-distance 0 2
   let patches-on-and-above-me (patch-set patch-here patch-on-top patch-on-top-on-top )
+  ; if there are agvs on those patches the charging-node is not available to be reserved
+  ; since this could cause congestion, therefore the possibility to reserve is maintained false.
   ifelse any? agvs-on patches-on-and-above-me[ 
     set available false
     set reserved false 
@@ -27,6 +32,10 @@ to charge-node-agv-on
 end
 
 to charge-node-free-itself
+  ;; If the agv that was using the charging-node changed its mode or 
+  ;; is no longer reserving this node or 
+  ;; no agv wants to go charge at this node
+  ;; then the node is no longer reserved
   if (reserved-by = nobody) or ([mode] of reserved-by != "c") or ([reserved-charge-spot] of reserved-by = nobody) [
     set reserved-by nobody
     set reserved false

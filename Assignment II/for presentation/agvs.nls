@@ -1,4 +1,5 @@
 to agv-setup
+  ;initialization
   set shape "lander"
   set color 8
   set label-color black  
@@ -14,6 +15,7 @@ to agv-setup
 end
  
 to agv-go
+  ; all agv procedures
   decrease-battery
   dead-agv-set-battery-drained-on
   alive-agv-set-battery-drained-on
@@ -33,38 +35,43 @@ to agv-go
   claim-charge-spot
   free-charge-spot
   to-roam
-  
+  ; for improving simulation visuals have battery life of agvs displayed
   set label battery-life
 end
 
 to decrease-battery
+  ; agv battery decreases with 1 unit every tick
   if battery-life > 0 [
     set battery-life battery-life - 1 
-    set color 8
+    set color 8 ; agv color is gray as long as it has battery ( battery-life > 0)
   ]
 end
  
 to dead-agv-set-battery-drained-on
+  ;; This procedure happens once, at the tick at which the agv battery-life has turned to 0.
   if (battery-life < 1) and (battery-drained-on = 0) [
-    set battery-drained-on ticks
-    set color red
-    set dead-agvs dead-agvs + 1
+    set battery-drained-on ticks ;  store tick at which agv ran out battery
+    set color red  ; have agv turn red if it has no more battery
+    set dead-agvs dead-agvs + 1 ; increase the total number of agvs that have ran out of batter by 1
   ]
 end
  
 to alive-agv-set-battery-drained-on
-  if battery-life > 1 [
+  ;; if the agv battery has charged, then restore the parameter that keeps track of the tick it died at to zero
+  if battery-life > 1 [ 
     set battery-drained-on 0
   ]
 end
  
 to move-dead-agv-to-charging-spot
+  ; if there is an available and not reserved charging-node, the agv that died is spawned after at least 30 ticks from the time it has
+  ; ran out of battery to that spot to charge
   if (battery-life < 1) and (any? charge-nodes with [available = true and reserved = false]) and (battery-drained-on < ticks - 30) [
-    move-to one-of charge-nodes with [available = true and reserved = false]
-    set target-node one-of nodes-here
-    ask charge-nodes-here [ set available false ]
-    set battery-drained-on 0
-    set mode "c"
+    move-to one-of charge-nodes with [available = true and reserved = false] ; spawn agv to charge-node
+    set target-node one-of nodes-here ; make it its destination node
+    ask charge-nodes-here [ set available false ] 
+    set battery-drained-on 0 
+    set mode "c" ; restore it in charging mode
     if ( reserved-charge-spot != nobody ) [
       ask reserved-charge-spot [ set reserved false ]
       ask reserved-charge-spot [set reserved-by nobody]
@@ -75,101 +82,121 @@ to move-dead-agv-to-charging-spot
 end
  
 to charge-agv
+  ; if agv is on a charging node its battery increases by 25 units per tick as long 
+  ; as it does not have a battery that is charged to more than 476
   if any? charge-nodes-here and battery-life < 476 [
      set battery-life (battery-life + 25)
   ]
 end
 
 to move-forward
+  ; agv has the node it is on determine its next-node and moves to its next- node at the next tick as long as its battery is not drained
   if (target-node != nobody) and (not member? target-node nodes-here) and (not member? target-node charge-nodes-here) and (battery-life > 0) [
-    ask one-of nodes-here [ set-my-next-node ]
-    if not any? agvs-on ([patch-here] of next-node) [
-      face next-node
-      move-to next-node
+    ask one-of nodes-here [ set-my-next-node ] 
+    if not any? agvs-on ([patch-here] of next-node) [ ; move only to the next-node if no agvs are on the same patch as the next-node
+      face next-node    ; set heading towards next-node
+      move-to next-node ; move to patch of next-node
     ]
   ]
 end
 
 to carry-luggage-forward
+  ; have luggage that has been assigned to the agv move at every tick to the location of the agv
+  ; it has been assigned to but only after the agv is carrying it
   if ( assigned-to-luggage != nobody ) and ( currently-carrying = true ) [
-    ask assigned-to-luggage [move-to myself]
-    set luggage-carrying-ticks luggage-carrying-ticks + 1
+    ask assigned-to-luggage [move-to myself] 
+    set luggage-carrying-ticks luggage-carrying-ticks + 1 ; increase performance metric by 1 
   ]
 end
 
 to set-my-next-node
-  let list-of-nodes nw:turtles-on-weighted-path-to ([target-node] of myself) weight
-  if is-list? list-of-nodes
-     [let agv-next-node item 1 list-of-nodes
-        ask myself [ set next-node agv-next-node ]]
+  ; determine the shortest path to the destination of the agv
+  let list-of-nodes nw:turtles-on-weighted-path-to ([target-node] of myself) weight ; returns a list of all nodes on the shortest path to the destination node
+  if is-list? list-of-nodes    ; if not already on the destination
+     [let agv-next-node item 1 list-of-nodes ; obtain the second element of the list which is the node the agv must move to 
+        ask myself [ set next-node agv-next-node ]] 
 end
 
 to go-to-pick-assigned-luggage
+  ; move to the collection-point of the luggage that has been assigned to agv to be picked up 
   if (assigned-to-belt != nobody) and (not currently-carrying) [
-    set target-node one-of nodes-on assigned-to-belt
+    set target-node one-of nodes-on assigned-to-belt ; change agv target node to the collection point on the feeder-belt on which the luggage it is assigned to is
   ]
 end
 
 to pick-up-luggage
+  ; get luggage assigned 
   if (assigned-to-belt != nobody) and (assigned-to-luggage = nobody) and (member? assigned-to-belt luggageCollectPoints-here)[
     set assigned-to-luggage one-of luggages-here
   ]
 end
 
 to carry-to-luggage-destination
+  ; agv has a luggage assigned to it and it is on the feeder-belt
   if ( assigned-to-luggage != nobody) and ( member? assigned-to-luggage luggages-here ) [
-    set currently-carrying true
-    set target-node [destination] of assigned-to-luggage
+    set currently-carrying true ;  agv believes that it is carrying from now
+    set target-node [destination] of assigned-to-luggage ; change agv target node changes to the destination of the luggage
   ]
 end
 
 to release-luggage
-  if (member? target-node nodes-here) and currently-carrying [
+  ; agv has been carrying a luggage and it has arrived at luggage destination
+  if (member? target-node nodes-here) and currently-carrying [ 
+    ; make agv available to get another luggage assigned
     set assigned-to-luggage nobody
     set assigned-to-belt nobody
     set currently-carrying false
+    ; once delivery is done agv goes into roaming mode
     set mode "r"
   ]
 end
 
 to agv-copy-global-parameters
+ ; make parameters dependent on sliders
   set agv-KC1 global-KC1
   set agv-KC2 global-KC2
   set agv-KS1 global-KS1
 end
 
 to calculate-utility-c
+  ; have agv calculate its gain to be in charge mode but only if 
+  ; it is not pick-up and delivering a luggage as it must not stop for that
   if (mode = "c") or (mode = "r")[
     set utility-c (agv-KC1 * exp (- agv-KC2 * battery-life) )
   ]
 end
  
 to calculate-utility-r
+  ; procedure to calculate gain of being in roaming mode
+  ; again don't calculate if its pick-up and delivering a luggage
   if (mode = "c") or (mode = "r")[
-    ifelse (any? charge-nodes with [available = true and reserved = false])[
-      set utility-r 0
-    ][
-      let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-belt != nobody] )
-      ifelse any? set-of-not-charging-nor-delivering-agvs[
-        set utility-r ( (1 - agv-KS1) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )
+    ifelse (any? charge-nodes with [available = true and reserved = false])[ ; find charging-nodes that are available and not reserved
+      set utility-r 0   ; set utility to roam to a low value
+    ][ ; if there are no charging-nodes that are available and not reserved
+      let set-of-not-charging-nor-delivering-agvs ( agvs with [mode != "c" and assigned-to-belt != nobody] ) ; agentset of agv roaming or being assigned to go to a luggage collection point
+      ifelse any? set-of-not-charging-nor-delivering-agvs[ 
+        set utility-r ( (1 - agv-KS1) * max( [utility-c] of set-of-not-charging-nor-delivering-agvs ) )  ; set roam gain if agenset not empty
       ][
-        set utility-r 0
+        set utility-r 0 ; if no egents exist, set utility to roam to a low value
       ]
     ]
   ]
 end
  
 to consider-a-luggage [ candidate-belt concerned-luggage ]
+  ; in order for agv to be in pick-up lugggage mode ( so to claim a luggage) it must have sufficient battery and the gain it gets from the luggage must be larger than 
+  ; the gain of charging or roaming at that tick
   if ((mode = "c") or (mode = "r")) [
     if ( [ utility-offer] of concerned-luggage > utility-r) and ( [ utility-offer] of concerned-luggage > utility-c) and battery-life > 150 [
-      set mode "p"
-      set assigned-to-belt candidate-belt
-      ask concerned-luggage [ set claimed true ]
+      set mode "p"  ; set pick-up mode
+      set assigned-to-belt candidate-belt ; belt of assigned luggage
+      ask concerned-luggage [ set claimed true ] ; claim the luggage
     ]
   ]
 end
 
 to select-to-charge
+  ; charge if the gain of charging is larger than that of roamning
   if (mode = "c") or (mode = "r")[
     if (utility-c > utility-r)[
       set mode "c"
@@ -179,9 +206,11 @@ end
 
 
 to select-to-roam
+  ; roam if the gain of charging is larger than that of roamning
   if (mode = "c") or (mode = "r")[
     if (utility-r > utility-c)[
       set mode "r"
+      ; free up any reservations previously made on a charging-node
       if ( reserved-charge-spot != nobody ) [
         ask reserved-charge-spot [ set reserved false ]
         ask reserved-charge-spot [ set reserved-by nobody ]
@@ -192,16 +221,18 @@ to select-to-roam
 end
 
 to claim-charge-spot
-  if (mode = "c") and (not any? charge-nodes-here) and (not is-charge-node? target-node)[
-    ifelse (any? charge-nodes with [available = true and reserved = false]) [
-      set target-node one-of charge-nodes with [available = true and reserved = false]
-      set reserved-charge-spot target-node
-      ask reserved-charge-spot [
+  ; if agv makes claims a charging-node to go to charge
+  if (mode = "c") and (not any? charge-nodes-here) and (not is-charge-node? target-node)[ ; agv not a charge-node it is in charge mode and does not have a charging-node as a destination
+    ifelse (any? charge-nodes with [available = true and reserved = false]) [ ; if there are charging-nodes available
+      set target-node one-of charge-nodes with [available = true and reserved = false] ; set destination an available charge-node
+      set reserved-charge-spot target-node ; contains agent node which agv is moving to
+      ask reserved-charge-spot [  ; have charge-node not be able to get reserved by anybody else
         set reserved true 
         set color red
       ]
-      ask reserved-charge-spot [set reserved-by myself]
+      ask reserved-charge-spot [set reserved-by myself] 
     ][
+      ; if there are no free charging spots, make agv roam
       set mode "r"
       if ( reserved-charge-spot != nobody ) [
         ask reserved-charge-spot [ set reserved false ]
@@ -214,20 +245,22 @@ to claim-charge-spot
 end
 
 to free-charge-spot
+  ; if in any other mode other than charging remove all reservations on a charging-node
   if ((mode = "p") or (mode = "r")) and ( reserved-charge-spot != nobody ) [
     ask reserved-charge-spot [ set reserved false 
-    set color green]
-    set reserved-charge-spot nobody
+    set color green] ; set color green if free to be reserved by another agv
+    set reserved-charge-spot nobody  
   ]
 end
 
 
 to to-roam
+  ; setup roaming area
   if (mode = "r")[
-    ifelse (xcor = 7) and (ycor = -5) and  (member? target-node nodes-here) [
-      set target-node ( one-of nodes with [ xcor = 15 and ycor = 10] ) 
+    ifelse (xcor = 7) and (ycor = -5) and  (member? target-node nodes-here) [ ; if not in this corner of the roaming area 
+      set target-node ( one-of nodes with [ xcor = 15 and ycor = 0] )        ; move to next node of roaming area
     ][
-      set target-node ( one-of nodes with [ xcor = 7  and ycor = -5] )
+      set target-node ( one-of nodes with [ xcor = 7  and ycor = -5] )       
     ]
   ]
 end

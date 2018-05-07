@@ -37,6 +37,7 @@ to setup-infra
  
   ]
   ask paths [ set pcolor white ]
+  ;; generate a node on every path
   ask paths [ sprout-nodes 1 [set shape "x"]]
  
   let feeder-belt patches with [
@@ -145,8 +146,9 @@ let chargePoints patches with [
     (pxcor = 7) and (pycor = -8) or
     (pxcor = 5) and (pycor = -8)
   ]
-  
+  ;; generate a charge node on every chargePoint
   ask chargePoints [ sprout-charge-nodes 1 ]
+  ;; generate a node on every chargePoint
   ask chargePoints [ sprout-nodes 1 ]
  
   let chargestructure patches with [
@@ -166,7 +168,7 @@ let chargePoints patches with [
 end
  
 
-to set-up-connectivity
+to set-up-connectivity ; connectivity procedure
   setup-belts
   setup-charging
   setup-highway

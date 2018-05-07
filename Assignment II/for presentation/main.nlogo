@@ -10,58 +10,61 @@ __includes [ "environment.nls"
 
 extensions [ nw ]
 
-breed [nodes node]
-breed [charge-nodes charge-node]
-breed [agvs agv]
-breed [luggages luggage]
-breed [luggageCollectPoints luggageCollectPoint]
-directed-link-breed [ connectivity connection ]
+breed [nodes node]    ;; these are on the white patches, feeder belts (dark green) and the charging patches (orange)
+breed [charge-nodes charge-node] ;; these are on the charging patches (orange)
+breed [agvs agv]                 ;; the robots that are used to deliver luggages
+breed [luggages luggage]         ;; luggages that are being delivered to chutes
+breed [luggageCollectPoints luggageCollectPoint] ;; rings on the feeder belt where a luggage can be picked up by a robot
+directed-link-breed [ connectivity connection ]  ;; links between nodes, which are the routes and agv can take
 
 globals [
-  feeder-belt-generators
-  delivery-nodes
+  feeder-belt-generators        ;; agenset of nodes on the feeder-belt
+  delivery-nodes               ;; agenset of nodes in between 2 chutes
 
   ;Performance metrics:
-  delivery-times
-  luggage-carrying-ticks
-  dead-agvs
+  delivery-times            ;; for each delivered luggage the time from generation to delivery is stored
+  luggage-carrying-ticks    ;; time spend by agvs picking up luggages
+  dead-agvs      ;; number of agvs that run out of battery
 ]
 
 agvs-own[
-  next-node
-  target-node
-  battery-life
-  assigned-to-luggage
-  assigned-to-belt
-  currently-carrying
-  mode
-  battery-drained-on
-  utility-c
-  utility-p
-  utility-r
-  agv-KC1
-  agv-KC2
-  agv-KS1
-  reserved-charge-spot
+  next-node      ;; agv has to be on the same patch as this node at the next tick in order to move on its shorterst path
+  target-node    ;; agv final destination
+  battery-life   ;; variable ranges from 0 to 500 and when at 0 the agv has run out of battery
+  assigned-to-luggage ;; contains the agent luggage the agv must pick-up from the feeder belt
+  assigned-to-belt     ;; contains the agent luggageCollectPoint the agv must go to in order to pick-up a luggage
+  currently-carrying ;; boolean, true if agv has a luggage to deliver on it
+  mode           ;; 3 modes: "p" picking up and delivering
+                  ; "c" charging
+                  ; "r" roaming
+  battery-drained-on ;; variables is zero as long as agv has battery. It is set to the tick when agv has run out of battery and reset back to
+                     ;; zero if agv gets recharged
+  utility-c          ;; agv gain of being in charging mode at next tick
+  utility-p          ;; agv gain of being in picking-up mode at next tick
+  utility-r          ;; agv gain of being in roaming mode at next tick
+  agv-KC1            ;; parameter used to calculate utility-c
+  agv-KC2            ;; parameter used to calculate utility-c
+  agv-KS1            ;; parameter used to calculate utility-s
+  reserved-charge-spot  ;; contains agent charge-node that agv must be on in otder to charge
   last-distance-to-belt
 ]
 
 luggages-own[
-  age
-  destination
-  utility-offer
-  luggage-KL1
-  luggage-KL2
-  claimed
+  age             ;; ticks since luggage generation
+  destination     ;; a random delivery-node the luggage is assigned to when generated
+  utility-offer   ;; agv gain of being in picking-up mode at next tick
+  luggage-KL1     ;; parameter used to calculate utility-p
+  luggage-KL2     ;; parameter used to calculate utility-p
+  claimed         ;; boolean, true if an agv is assigned to pick it up
 ]
 
 charge-nodes-own[
-  reserved
-  available
-  reserved-by
+  reserved       ;; boolean, true if no agv has reserved for use this charge-node
+  available      ;; boolean, true if there are no agvs on the narrow two way path to charging-node
+  reserved-by    ;; contains agv that wants to come to this charging node
 ]
 
-connectivity-own[ weight ]
+connectivity-own[ weight ] ; weight is 1
 
 to setup
   clear-all
@@ -74,12 +77,15 @@ to setup
   set-up-luggage-infra
   set-up-delivery-infra
   ask charge-nodes [setup-chargenodes]
-  set-up-connectivity
+  set-up-connectivity   ;; links procedure which sets the distinct highways the agvs must take to reach a destination node
 
+  ;; initializing the performance metric
   set delivery-times []
   set luggage-carrying-ticks 0
   set dead-agvs 0
 
+  ;; make the number of agvs determined by the number-of-robots slider
+  ;; and generate them at random at the location of the nodes
   ask n-of number-of-robots nodes [ ask patch-here [sprout-agvs 1 [agv-setup] ] ]
 end
 
@@ -88,7 +94,7 @@ to go
   ask luggages [luggage-go]
   ask agvs [agv-go]
   ask charge-nodes [charge-nodes-go]
-  generate-luggage-service-notrandom
+  generate-luggage-service-notrandom   ;; luggage procedure in which generates  a luggage at every x ticks of the simulation on a random feeder-belt
   ask luggageCollectPoints [luggageCollectPoints-go]
 end
 @#$#@#$#@
@@ -160,7 +166,7 @@ luggage-time
 luggage-time
 5
 20
-8.0
+20.0
 1
 1
 NIL
@@ -252,7 +258,7 @@ global-KL2
 global-KL2
 0
 3
-1.5
+0.1
 0.1
 1
 NIL

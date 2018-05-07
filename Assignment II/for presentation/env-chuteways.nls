@@ -1,4 +1,5 @@
 to setup-chuteways
+  ;; links between nodes on routes where agv can drop a luggage on a chute and the middle area
 ask nodes-on patches with [(pxcor =	5	) and (pycor = 	5	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	6	)] ]
 ask nodes-on patches with [(pxcor =	5	) and (pycor = 	6	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	7	)] ]
 ask nodes-on patches with [(pxcor =	5	) and (pycor = 	7	)] [create-connection-to one-of nodes-on patches with [(pxcor =	5	) and (pycor =	8	)] ]

@@ -1,4 +1,6 @@
 to setup-highway
+  ;; links between nodes on the 4 main highways 
+  
 ;topline
 ask nodes-on patches with [(pxcor =	-24	) and (pycor = 	10	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-23	) and (pycor =	10	)] ]
 ask nodes-on patches with [(pxcor =	-23	) and (pycor = 	10	)] [create-connection-to one-of nodes-on patches with [(pxcor =	-22	) and (pycor =	10	)] ]
